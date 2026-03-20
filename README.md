@@ -72,3 +72,23 @@ npm run dev
 - O*NET skill anchoring and semantic matching.
 - Redis-backed async job queue and SSE progress streaming.
 - Course catalog + prerequisite DAG traversal engine.
+
+## O*NET Data Bootstrap
+
+If you already have the O*NET text dump under `data/db_30_1_text`, build the
+canonical skill index used by the embedder:
+
+```bash
+make bootstrap-data
+```
+
+This writes `data/onet_skills.json` as a list of nodes with `id`, `title`,
+`importance`, and `aliases`.
+
+By default it builds an extended index from `Skills`, `Abilities`,
+`Knowledge`, `Work Activities`, `Technology Skills`, and `Tools Used`.
+If you want only the strict canonical SAB set, run:
+
+```bash
+python3 scripts/build_onet_skills.py --compact
+```

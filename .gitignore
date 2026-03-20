@@ -25,3 +25,4 @@ frontend/dist/
 *.log
 *.sqlite3
 *.db
+data/db_30_1_text/

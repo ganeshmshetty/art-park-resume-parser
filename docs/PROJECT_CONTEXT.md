@@ -36,3 +36,23 @@ Hybrid extraction (spaCy + LLM) + O*NET anchoring + DAG-based pathway ordering g
 - Full auth/roles
 - Production-scale queue orchestration
 - Multi-tenant billing/quotas
+
+## 24-Hour Build Mode (Locked)
+
+This project is scoped for a strict 24-hour hackathon.
+
+### Must Ship in 24 Hours
+- `POST /analyze` + `GET /result/{job_id}` working end-to-end.
+- Resume/JD extraction returning contract-compliant JSON.
+- O*NET anchoring and gap vector generation.
+- Catalog-grounded pathway generation with prerequisite ordering.
+- Frontend upload flow + result rendering for one complete demo scenario.
+- Docker Compose cold start and one reproducible demo script.
+
+### Nice-to-Have (Only if time remains)
+- SSE progress streaming.
+- Redis-backed queue (instead of in-memory jobs).
+- Advanced metrics dashboard and multiple persona demos.
+
+### Cutline Rule
+If a task does not improve demo reliability, correctness, or explainability, defer it.

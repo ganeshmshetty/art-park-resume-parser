@@ -11,8 +11,10 @@ from fastapi.responses import JSONResponse
 
 from ai.embedder import anchor_to_onet
 from ai.extractor import extract_jd_skills, extract_resume_skills
-from ai.gap_analyzer import compute_gap_vector
+from ai.gap_analyzer import compute_gap_vector, generate_adaptive_pathway
+from ai.models import AnalysisResult, ExtractedSkill, JDSkill
 from ai.parser import extract_text
+from app.services.catalog import CatalogValidationError, CourseCatalogService
 
 ALLOWED_EXTENSIONS = {".pdf", ".docx", ".txt"}
 MAX_UPLOAD_BYTES = int(os.getenv("MAX_UPLOAD_BYTES", str(5 * 1024 * 1024)))
@@ -82,6 +84,13 @@ def _validate_upload(filename: str | None, file_bytes: bytes, field: str) -> JSO
 JOBS: dict[str, dict] = {}
 _JOBS_LOCK = Lock()
 
+CATALOG: CourseCatalogService | None = None
+CATALOG_ERROR: str | None = None
+try:
+    CATALOG = CourseCatalogService.from_env()
+except CatalogValidationError as exc:
+    CATALOG_ERROR = str(exc)
+
 
 def _set_job(job_id: str, payload: dict) -> None:
     with _JOBS_LOCK:
@@ -111,39 +120,71 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
         jd_skills = anchor_to_onet(extract_jd_skills(jd_text))
         gap_vector = compute_gap_vector(resume_skills, jd_skills)
 
-        # Placeholder pathway until DAG engine is wired.
-        pathway_nodes = []
-        reasoning_traces = []
-        for idx, gap in enumerate(gap_vector[:10], start=1):
-            module_id = f"placeholder_{idx:03d}"
-            trace_id = f"trace_{idx:03d}"
-            pathway_nodes.append(
-                {
-                    "module_id": module_id,
-                    "title": f"Close gap: {gap.skill_name}",
-                    "phase": "Foundation" if idx <= 3 else "Core",
-                    "skills_targeted": [gap.onet_id] if gap.onet_id else [],
-                    "reasoning_ref": trace_id,
-                }
-            )
-            reasoning_traces.append(
-                {
-                    "id": trace_id,
-                    "module_id": module_id,
-                    "text": f"Recommended to reduce the gap in {gap.skill_name}.",
-                    "confidence": min(0.99, max(0.6, float(gap.importance))),
-                }
-            )
+        if CATALOG is None:
+            raise RuntimeError(CATALOG_ERROR or "Course catalog is unavailable")
 
+        pathway = generate_adaptive_pathway(gap_vector, CATALOG)
+
+        # Compute Metrics
         required_skills = [s for s in jd_skills if s.is_required]
-        covered_required = 0
-        resume_onet = {s.onet_id for s in resume_skills if s.onet_id}
-        for req in required_skills:
-            if req.onet_id and req.onet_id in resume_onet:
-                covered_required += 1
+        # Check coverage against gap vector (gaps imply missing)
+        # Skills with gap score of 0 are covered.
+        # But gap vector only contains gaps > 0.
+        # So covered = total_required - len(gap_vector related to required)
+        
+        # Actually easier: check resume skills vs required (already done in compute_gap_vector usually but let's re-verify)
+        # gap_vector has gaps.
+        # coverage score = 1 - (sum of gap weights / sum of total weights) or simple count
+        
+        # Simple count heuristic:
+        # Covered if delta is 0. compute_gap_vector returns ONLY items with delta > 0.
+        # So items NOT in gap_vector are covered (or not required).
+        
+        gap_onet_ids = {g.onet_id for g in gap_vector if g.onet_id}
+        total_required_count = len(required_skills)
+        if total_required_count > 0:
+            # skills in gap vector are "missing" or "partial"
+            # let's count only fully missing for simplicity, or weighted
+            # Hackathon simple metric:
+            missing_count = sum(1 for s in required_skills if s.onet_id in gap_onet_ids)
+            coverage = 1.0 - (missing_count / total_required_count)
+        else:
+            coverage = 1.0
 
-        coverage = covered_required / len(required_skills) if required_skills else 1.0
-        estimated_minutes = len(pathway_nodes) * 120
+        # Redundancy Reduction:
+        # Static curriculum might be "all modules for all required skills"
+        # Adaptive pathway is "only modules for gaps"
+        # Let's estimate static count as sum of 'modules_for_skill' for all required skills
+        # This is a bit heavy to compute perfectly, so let's use a heuristic:
+        # Static = sum(len(CATALOG.modules_by_skill.get(s.onet_id, [])) for s in required_skills)
+        # Adaptive = len(pathway.nodes)
+        
+        static_modules_count = 0
+        for s in required_skills:
+            if s.onet_id:
+                static_modules_count += len(CATALOG.modules_by_skill.get(s.onet_id, []))
+        
+        if static_modules_count > 0:
+            redundancy_reduction = 1.0 - (len(pathway.nodes) / static_modules_count)
+            redundancy_reduction = max(0.0, redundancy_reduction) # clamp
+        else:
+            redundancy_reduction = 0.0
+
+        # Collect reasoning traces from pathway nodes
+        traces = []
+        for node in pathway.nodes:
+            if node.reasoning:
+                traces.append(node.reasoning)
+
+        result = AnalysisResult(
+            resume_skills=resume_skills,
+            jd_skills=jd_skills,
+            gap_vector=gap_vector,
+            pathway=pathway,
+            reasoning_traces=traces,
+            coverage_score=round(coverage, 2),
+            redundancy_reduction=round(redundancy_reduction, 2)
+        )
 
         _set_job(
             job_id,
@@ -151,21 +192,12 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
                 "job_id": job_id,
                 "status": "completed",
                 "updated_at": _utc_now(),
-                "result": {
-                    "summary": {
-                        "coverage_score": round(coverage, 4),
-                        "redundancy_reduction": 0.0,
-                        "estimated_total_minutes": estimated_minutes,
-                    },
-                    "pathway": {
-                        "nodes": pathway_nodes,
-                        "edges": [],
-                    },
-                    "reasoning_traces": reasoning_traces,
-                },
+                "result": result.model_dump(),
             },
         )
     except Exception as exc:
+        import traceback
+        traceback.print_exc()
         _set_job(
             job_id,
             {
@@ -184,6 +216,24 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok"}
+
+
+@app.get("/catalog/health")
+def catalog_health() -> JSONResponse:
+    if CATALOG is None:
+        return JSONResponse(
+            status_code=503,
+            content={"status": "unavailable", "error": CATALOG_ERROR or "unknown"},
+        )
+
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "ok",
+            "modules": len(CATALOG.modules),
+            "skills_indexed": len(CATALOG.modules_by_skill),
+        },
+    )
 
 
 @app.post("/analyze")

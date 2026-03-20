@@ -31,10 +31,25 @@ class ReasoningTrace(BaseModel):
     confidence: float
     prerequisite_chain: List[str] = []
 
+class PathNode(BaseModel):
+    module_id: str
+    title: str
+    phase: str  # "Foundation", "Core", "Advanced"
+    reasoning: Optional[ReasoningTrace] = None
+    status: str = "pending"  # "completed", "in-progress", "pending"
+    estimated_duration: int
+    skill_gaps_covered: List[str]
+
+class AdaptivePathway(BaseModel):
+    nodes: List[PathNode]
+    total_duration: int
+    phases: dict[str, List[str]] # phase_name -> [module_ids]
+
 class AnalysisResult(BaseModel):
     resume_skills: List[ExtractedSkill]
     jd_skills: List[JDSkill]
     gap_vector: List[GapItem]
+    pathway: Optional[AdaptivePathway] = None
     reasoning_traces: List[ReasoningTrace]
     coverage_score: float        # % of JD skills covered
     redundancy_reduction: float  # % of modules skipped vs static curriculum

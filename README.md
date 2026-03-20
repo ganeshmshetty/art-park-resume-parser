@@ -2,6 +2,8 @@
 
 Initial bootstrap for the hackathon project described in `execution_plan.html`.
 
+This repository is being executed as a strict 24-hour build. Scope is intentionally MVP-first: reliable end-to-end analysis + grounded pathway output over non-critical polish.
+
 ## Monorepo Structure
 
 ```text
@@ -92,3 +94,16 @@ If you want only the strict canonical SAB set, run:
 ```bash
 python3 scripts/build_onet_skills.py --compact
 ```
+
+## Course Catalog Service
+
+Seed catalog modules are provided in `data/catalog/modules.json`.
+The API loads this file at startup for module selection and prerequisite edges.
+To use a different catalog, set:
+
+```bash
+CATALOG_PATH=/absolute/path/to/modules.json
+```
+
+Catalog module contract:
+`{id, title, skill_ids[], domain, level, duration_min, prerequisites[]}`

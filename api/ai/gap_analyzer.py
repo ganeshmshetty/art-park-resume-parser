@@ -1,4 +1,8 @@
-from .models import ExtractedSkill, JDSkill, GapItem
+import collections
+from typing import Dict, List, Optional, Set
+
+from api.ai.models import ExtractedSkill, JDSkill, GapItem, AdaptivePathway, PathNode, ReasoningTrace
+from api.app.services.catalog import CatalogModule, CourseCatalogService
 
 def compute_gap_vector(
     resume_skills: list[ExtractedSkill],
@@ -38,3 +42,162 @@ def compute_gap_vector(
 
     gaps.sort(key=lambda g: g.gap_score, reverse=True)
     return gaps
+
+def generate_adaptive_pathway(
+    gaps: List[GapItem],
+    catalog: CourseCatalogService
+) -> AdaptivePathway:
+    """
+    Constructs a topologically sorted learning path based on skill gaps.
+    1. Identify target modules for gaps.
+    2. Expand prerequisites to build a DAG.
+    3. Topologically sort the DAG.
+    4. Group into phases.
+    """
+    
+    # --- Step 1: Identify target modules ---
+    # Convert gap skills to target modules via catalog
+    needed_skill_ids = {g.onet_id for g in gaps if g.onet_id}
+    
+    # Use the catalog's heuristic to pick best modules for these skills
+    # We ask for a few per gap to ensure coverage
+    # Assuming catalog.filter_modules() or similar exists - we'll use scan
+    
+    potential_modules = []
+    # Simple scan for now (hackathon speed) - ideally CatalogService has optimized lookup
+    # In catalog.py we saw modules_by_skill
+    
+    # Let's interact with catalog service directly
+    # catalog.modules_by_skill is available
+    
+    target_modules_map = {} # id -> module
+    
+    for gap in gaps:
+        if not gap.onet_id:
+            continue
+        
+        candidates = catalog.modules_by_skill.get(gap.onet_id, [])
+        if not candidates:
+            continue
+            
+        # Pick best candidate: e.g. matching level
+        # If gap suggests moving from Level 1 -> 2, pick Intermediate
+        target_level = "Beginner"
+        if gap.required_level >= 3:
+            target_level = "Advanced"
+        elif gap.required_level == 2:
+            target_level = "Intermediate"
+            
+        best = next((m for m in candidates if m.level == target_level), candidates[0])
+        target_modules_map[best.id] = best
+
+    # --- Step 2: Expand Prerequisites (DAG Build) ---
+    # We need to include all prerequisites of the target modules recursively
+    
+    expanded_modules: Dict[str, CatalogModule] = {}
+    
+    def expand(module_id: str):
+        if module_id in expanded_modules:
+            return
+        
+        module = catalog.modules_by_id.get(module_id)
+        if not module:
+            return 
+        
+        expanded_modules[module_id] = module
+        for prereq_id in module.prerequisites:
+            expand(prereq_id)
+            
+    for mid in target_modules_map:
+        expand(mid)
+    
+    # --- Step 3: Topological Sort (Kahn's Algorithm) ---
+    # Build Adjacency List: Prereq -> [Dependents]
+    adj = collections.defaultdict(list)
+    in_degree = {mid: 0 for mid in expanded_modules}
+    
+    for mid, module in expanded_modules.items():
+        for prereq_id in module.prerequisites:
+            if prereq_id in expanded_modules:
+                adj[prereq_id].append(mid)
+                in_degree[mid] += 1
+                
+    queue = collections.deque([mid for mid, deg in in_degree.items() if deg == 0])
+    sorted_order = []
+    
+    while queue:
+        node_id = queue.popleft()
+        sorted_order.append(node_id)
+        
+        for neighbor in adj[node_id]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+                
+    # Check for cycles / leftover nodes (simple fallback: append remaining)
+    if len(sorted_order) != len(expanded_modules):
+        visited = set(sorted_order)
+        for mid in expanded_modules:
+            if mid not in visited:
+                sorted_order.append(mid)
+
+    # --- Step 4: Construct PathNodes & Phases ---
+    path_nodes = []
+    current_total_min = 0
+    phase_buckets = {"Foundation": [], "Core": [], "Advanced": []}
+    
+    total_steps = len(sorted_order)
+    
+    for i, mod_id in enumerate(sorted_order):
+        module = expanded_modules[mod_id]
+        
+        # Phase Heuristic
+        if module.level == "Beginner":
+            p = "Foundation"
+        elif module.level == "Advanced":
+            p = "Advanced"
+        else:
+            p = "Core"
+            
+        # Fallback if distribution is skewed
+        if p == "Foundation" and i > total_steps * 0.5:
+            p = "Core"
+            
+        phase_buckets.setdefault(p, []).append(mod_id)
+        
+        # Determine coverage
+        skills_covered = []
+        for sid in module.skill_ids:
+             # Find matching gap
+            for g in gaps:
+                if g.onet_id == sid:
+                    skills_covered.append(g.skill_name)
+        
+        # Dedupe
+        skills_covered = list(set(skills_covered))
+        
+        reasoning = ReasoningTrace(
+            module_id=module.id,
+            module_title=module.title,
+            gap_closed=", ".join(skills_covered) if skills_covered else "Prerequisite Knowledge",
+            justification=f"This module addresses your gap in {skills_covered[0]}" if skills_covered else f"Necessary prerequisite for advanced modules.",
+            confidence=0.95
+        )
+        
+        path_nodes.append(PathNode(
+            module_id=module.id,
+            title=module.title,
+            phase=p,
+            status="pending",
+            estimated_duration=module.duration_min,
+            skill_gaps_covered=skills_covered,
+            reasoning=reasoning
+        ))
+        
+        current_total_min += module.duration_min
+
+    return AdaptivePathway(
+        nodes=path_nodes,
+        total_duration=current_total_min,
+        phases=phase_buckets
+    )

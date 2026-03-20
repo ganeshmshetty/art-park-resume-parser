@@ -282,3 +282,49 @@ def result(job_id: str) -> JSONResponse:
     if not job:
         return JSONResponse(status_code=200, content={"job_id": job_id, "status": "not_found"})
     return JSONResponse(status_code=200, content=job)
+
+
+@app.get("/metrics")
+def metrics() -> JSONResponse:
+    """Aggregate evaluation metrics across all completed jobs in the current session."""
+    with _JOBS_LOCK:
+        all_jobs = list(JOBS.values())
+
+    completed = [j for j in all_jobs if j.get("status") == "completed"]
+    total = len(all_jobs)
+    n = len(completed)
+
+    if n == 0:
+        return JSONResponse(
+            status_code=200,
+            content={
+                "total_jobs": total,
+                "total_jobs_completed": 0,
+                "avg_coverage_score": None,
+                "avg_redundancy_reduction": None,
+                "avg_estimated_minutes": None,
+                "message": "No completed jobs yet.",
+            },
+        )
+
+    coverage_scores = [
+        j["result"]["summary"].get("coverage_score", 0) for j in completed if "result" in j
+    ]
+    redundancy_vals = [
+        j["result"]["summary"].get("redundancy_reduction", 0) for j in completed if "result" in j
+    ]
+    minutes_vals = [
+        j["result"]["summary"].get("estimated_total_minutes", 0) for j in completed if "result" in j
+    ]
+
+    return JSONResponse(
+        status_code=200,
+        content={
+            "total_jobs": total,
+            "total_jobs_completed": n,
+            "avg_coverage_score": round(sum(coverage_scores) / len(coverage_scores), 4) if coverage_scores else None,
+            "avg_redundancy_reduction": round(sum(redundancy_vals) / len(redundancy_vals), 4) if redundancy_vals else None,
+            "avg_estimated_minutes": round(sum(minutes_vals) / len(minutes_vals)) if minutes_vals else None,
+        },
+    )
+

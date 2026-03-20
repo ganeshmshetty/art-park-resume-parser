@@ -1,75 +1,217 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import "./styles.css";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+// Expose React globally so sub-components can call window.React.useState
+// (they import hooks this way to keep imports clean in simpler files)
+import React from "react";
+window.React = React;
 
+import UploadPanel from "./UploadPanel";
+import ProgressBar from "./ProgressBar";
+import SummaryCards from "./SummaryCards";
+import SkillGapHeatmap from "./SkillGapHeatmap";
+import PathwayFlowGraph from "./PathwayFlowGraph";
+import ReasoningPanel from "./ReasoningPanel";
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
+// Step key constants
+const STEPS = { UPLOAD: 0, PROCESSING: 1, RESULTS: 2 };
+
+const STEP_META = [
+  { label: "Upload" },
+  { label: "Analyzing" },
+  { label: "Results" },
+];
+
+/* ---- Step Indicator ---- */
+function StepIndicator({ current }) {
+  return (
+    <div className="step-indicator">
+      {STEP_META.map((s, i) => {
+        const done = i < current;
+        const active = i === current;
+        return (
+          <React.Fragment key={s.label}>
+            <div
+              className={`step-dot${active ? " active" : ""}${done ? " done" : ""}`}
+            >
+              <div className="step-circle">{done ? "✓" : i + 1}</div>
+              <span style={{ whiteSpace: "nowrap" }}>{s.label}</span>
+            </div>
+            {i < STEP_META.length - 1 && (
+              <div className={`step-line${done ? " done" : ""}`} />
+            )}
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ---- Main App ---- */
 export default function App() {
-  const [resume, setResume] = useState(null);
-  const [jd, setJd] = useState(null);
-  const [status, setStatus] = useState("Idle");
+  const [step, setStep] = useState(STEPS.UPLOAD);
+  const [jobId, setJobId] = useState(null);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
+  const [selectedModule, setSelectedModule] = useState(null);
 
-  async function handleAnalyze(event) {
-    event.preventDefault();
-
-    if (!resume || !jd) {
-      setStatus("Select both a resume and a job description file.");
-      return;
-    }
-
-    setStatus("Uploading files...");
-
+  /* ---- Upload handler ---- */
+  async function handleSubmit({ resume, jd }) {
+    setError(null);
     const formData = new FormData();
     formData.append("resume", resume);
     formData.append("jd", jd);
 
-    const analyzeResp = await fetch(`${API_BASE_URL}/analyze`, {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!analyzeResp.ok) {
-      setStatus("Analyze request failed.");
+    let res;
+    try {
+      res = await fetch(`${API_BASE_URL}/analyze`, {
+        method: "POST",
+        body: formData,
+      });
+    } catch {
+      setError("Cannot reach the server. Is the API running?");
       return;
     }
 
-    const analyzeData = await analyzeResp.json();
-    setStatus(`Job queued: ${analyzeData.job_id}`);
-
-    const resultResp = await fetch(`${API_BASE_URL}/result/${analyzeData.job_id}`);
-    if (!resultResp.ok) {
-      setStatus("Could not fetch result.");
+    if (!res.ok) {
+      const err = await res.json().catch(() => null);
+      setError(err?.error?.message || "Upload failed.");
       return;
     }
 
-    const resultData = await resultResp.json();
-    setResult(resultData);
-    setStatus("Ready");
+    const data = await res.json();
+    setJobId(data.job_id);
+    setStep(STEPS.PROCESSING);
   }
 
+  /* ---- Poll complete ---- */
+  const handleComplete = useCallback((data) => {
+    setResult(data.result);
+    setStep(STEPS.RESULTS);
+  }, []);
+
+  /* ---- Poll error ---- */
+  const handlePollError = useCallback((msg) => {
+    setError(msg);
+    setStep(STEPS.UPLOAD);
+  }, []);
+
+  /* ---- Reset ---- */
+  function handleReset() {
+    setStep(STEPS.UPLOAD);
+    setJobId(null);
+    setResult(null);
+    setError(null);
+    setSelectedModule(null);
+  }
+
+  /* ---- module select for reasoning panel ---- */
+  const handleSelectModule = useCallback((mod) => {
+    setSelectedModule(mod);
+  }, []);
+
   return (
-    <main className="page">
-      <section className="panel">
-        <h1>AI-Adaptive Onboarding Engine</h1>
-        <p className="subtitle">Initial bootstrap UI for upload and API connectivity checks.</p>
+    <>
+      {/* Animated background */}
+      <div className="mesh-bg" />
 
-        <form onSubmit={handleAnalyze} className="form">
-          <label>
-            Resume File
-            <input type="file" onChange={(e) => setResume(e.target.files?.[0] || null)} />
-          </label>
+      <div className="page">
+        {/* ---- Header ---- */}
+        <header className="header">
+          <div className="header-logo">🧠</div>
+          <div className="header-title">AI-Adaptive Onboarding Engine</div>
+          <div className="header-badge">Hackathon 2026</div>
+        </header>
 
-          <label>
-            Job Description File
-            <input type="file" onChange={(e) => setJd(e.target.files?.[0] || null)} />
-          </label>
+        {/* ---- Main ---- */}
+        <main className="main-content">
+          <StepIndicator current={step} />
 
-          <button type="submit">Analyze</button>
-        </form>
+          {/* UPLOAD */}
+          {step === STEPS.UPLOAD && (
+            <div className="glass-card" style={{ animation: "slideUp 0.4s ease" }}>
+              <UploadPanel onSubmit={handleSubmit} error={error} />
+            </div>
+          )}
 
-        <p className="status">Status: {status}</p>
+          {/* PROCESSING */}
+          {step === STEPS.PROCESSING && (
+            <ProgressBar
+              jobId={jobId}
+              apiBase={API_BASE_URL}
+              onComplete={handleComplete}
+              onError={handlePollError}
+            />
+          )}
 
-        {result ? <pre>{JSON.stringify(result, null, 2)}</pre> : null}
-      </section>
-    </main>
+          {/* RESULTS */}
+          {step === STEPS.RESULTS && result && (
+            <div style={{ animation: "slideUp 0.4s ease" }}>
+              <div className="results-header">
+                <div>
+                  <h1 className="section-title">Your Learning Pathway</h1>
+                  <p className="section-subtitle">
+                    {result.pathway?.nodes?.length || 0} personalized modules ·
+                    grounded, hallucination-free recommendations
+                  </p>
+                </div>
+                <button
+                  id="reset-btn"
+                  className="btn-reset"
+                  onClick={handleReset}
+                >
+                  ← New Analysis
+                </button>
+              </div>
+
+              {/* Metric Cards */}
+              <SummaryCards summary={result.summary} />
+
+              {/* Skill Gap Chart */}
+              <SkillGapHeatmap gapVector={result.gap_vector || buildGapFromPathway(result)} />
+
+              {/* React Flow DAG */}
+              <PathwayFlowGraph
+                pathway={result.pathway}
+                onSelectModule={handleSelectModule}
+              />
+            </div>
+          )}
+        </main>
+      </div>
+
+      {/* Reasoning Side Panel */}
+      {selectedModule && (
+        <ReasoningPanel
+          module={selectedModule}
+          traces={result?.reasoning_traces}
+          onClose={() => setSelectedModule(null)}
+        />
+      )}
+    </>
   );
+}
+
+/**
+ * Derive a gap vector from pathway nodes when the API doesn't return one explicitly.
+ * Uses reasoning trace confidence as a proxy for gap size.
+ */
+function buildGapFromPathway(result) {
+  const nodes = result?.pathway?.nodes || [];
+  const traces = result?.reasoning_traces || [];
+  const traceMap = Object.fromEntries(traces.map((t) => [t.module_id, t]));
+
+  return nodes.map((n) => {
+    const trace = traceMap[n.module_id];
+    const conf = trace?.confidence ?? 0.7;
+    return {
+      skill_name: n.title,
+      onet_id: n.skills_targeted?.[0] || n.module_id,
+      delta: 1 - conf,           // inverse of confidence = gap size
+      importance: conf,
+    };
+  });
 }

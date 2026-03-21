@@ -4,8 +4,6 @@ export default function ReasoningPanel({ module: mod, traces, onClose }) {
     if (!mod) return null;
 
     const trace = mod.reasoning || traces?.find((t) => t.module_id === mod.module_id);
-    const confidence = trace?.confidence ?? 0;
-    const confidencePct = Math.round(confidence * 100);
 
     return (
         <>
@@ -57,25 +55,8 @@ export default function ReasoningPanel({ module: mod, traces, onClose }) {
                     </button>
                 </div>
 
-                {/* Body */}
-                <div className="drawer-body">
-                    {/* Confidence */}
-                    <div className="trace-section">
-                        <div className="trace-section-label">AI Confidence</div>
-                        <div className="confidence-bar-wrap">
-                            <div className="confidence-label-row">
-                                <span>Confidence score</span>
-                                <span>{confidencePct}%</span>
-                            </div>
-                            <div className="confidence-track">
-                                <div
-                                    className="confidence-fill"
-                                    style={{ width: `${confidencePct}%` }}
-                                />
-                            </div>
-                        </div>
-                    </div>
-
+                    {/* Body */}
+                    <div className="drawer-body">
                     {/* Reasoning Text */}
                     {trace && (
                         <div className="trace-section">
@@ -123,48 +104,39 @@ export default function ReasoningPanel({ module: mod, traces, onClose }) {
                     {/* Quick stats */}
                     <div
                         style={{
-                            display: "grid",
-                            gridTemplateColumns: "1fr 1fr",
-                            gap: 12,
                             marginTop: 8,
                         }}
                     >
-                        {[
-                            { label: "Confidence", value: `${confidencePct}%` },
-                            { label: "Phase", value: mod.phase },
-                        ].map(({ label, value }) => (
+                        <div
+                            style={{
+                                background: "var(--bg-card)",
+                                border: "1px solid var(--border)",
+                                borderRadius: "var(--radius-sm)",
+                                padding: "14px",
+                                textAlign: "center",
+                            }}
+                        >
                             <div
-                                key={label}
                                 style={{
-                                    background: "var(--bg-card)",
-                                    border: "1px solid var(--border)",
-                                    borderRadius: "var(--radius-sm)",
-                                    padding: "14px",
-                                    textAlign: "center",
+                                    fontSize: 18,
+                                    fontWeight: 800,
+                                    color: "var(--text-primary)",
                                 }}
                             >
-                                <div
-                                    style={{
-                                        fontSize: 18,
-                                        fontWeight: 800,
-                                        color: "var(--text-primary)",
-                                    }}
-                                >
-                                    {value}
-                                </div>
-                                <div
-                                    style={{
-                                        fontSize: 11,
-                                        color: "var(--text-muted)",
-                                        marginTop: 4,
-                                        textTransform: "uppercase",
-                                        letterSpacing: "0.4px",
-                                    }}
-                                >
-                                    {label}
-                                </div>
+                                {mod.phase}
                             </div>
-                        ))}
+                            <div
+                                style={{
+                                    fontSize: 11,
+                                    color: "var(--text-muted)",
+                                    marginTop: 4,
+                                    textTransform: "uppercase",
+                                    letterSpacing: "0.4px",
+                                }}
+                            >
+                                Phase
+                            </div>
+                        </div>
                     </div>
                 </div>
             </aside>

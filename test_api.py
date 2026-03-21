@@ -42,7 +42,8 @@ print(f"Job ID: {job_id}")
 for _ in range(30):
     res = requests.get(f'http://localhost:8000/result/{job_id}').json()
     status = res['status']
-    print(f"Status: {status}")
+    message = res.get('message', '')
+    print(f"Status: {status} | Message: {message}")
     if status in ['completed', 'failed']:
         break
     time.sleep(1)

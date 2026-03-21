@@ -4,6 +4,7 @@ import os
 from datetime import datetime, timezone
 from threading import Lock
 from uuid import uuid4
+import logging
 
 from fastapi import BackgroundTasks, FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,6 +19,9 @@ ALLOWED_EXTENSIONS = {".pdf", ".docx", ".txt"}
 MAX_UPLOAD_BYTES = int(os.getenv("MAX_UPLOAD_BYTES", str(5 * 1024 * 1024)))
 
 app = FastAPI(title="AI-Adaptive Onboarding Engine API", version="0.1.0")
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 app.add_middleware(
     CORSMiddleware,
@@ -92,7 +96,10 @@ except CatalogValidationError as exc:
 
 def _set_job(job_id: str, payload: dict) -> None:
     with _JOBS_LOCK:
-        JOBS[job_id] = payload
+        if job_id in JOBS:
+            JOBS[job_id].update(payload)
+        else:
+            JOBS[job_id] = payload
 
 
 def _get_job(job_id: str) -> dict | None:
@@ -104,13 +111,14 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
     _set_job(
         job_id,
         {
-            "job_id": job_id,
             "status": "processing",
+            "message": "Starting analysis job",
             "updated_at": _utc_now(),
         },
     )
 
     try:
+        logger.info(f"[{job_id}] Started analysis job")
         # Import heavy AI modules at runtime to avoid blocking server startup
         # when optional ML dependencies are not installed. If imports fail
         # the job will be marked as failed with a clear error.
@@ -123,20 +131,30 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
         except Exception as exc:
             raise RuntimeError(f"AI dependencies missing or failed to import: {exc}")
 
+        logger.info(f"[{job_id}] Extracting text from files")
+        _set_job(job_id, {"message": "Extracting text from files", "updated_at": _utc_now()})
         resume_text = extract_text(resume_bytes, resume_filename)
         jd_text = extract_text(jd_bytes, jd_filename)
 
+        logger.info(f"[{job_id}] Extracting skills and mapping to ONET")
+        _set_job(job_id, {"message": "Extracting skills and mapping to ONET", "updated_at": _utc_now()})
         resume_skills = anchor_to_onet(extract_resume_skills(resume_text))
-        jd_skills = anchor_to_onet(extract_jd_skills(jd_text))
-        print(f"DEBUG: Extracted {len(resume_skills)} resume skills, {len(jd_skills)} JD skills")
+        detected_domain, jd_skills_raw = extract_jd_skills(jd_text)
+        jd_skills = anchor_to_onet(jd_skills_raw)
+        logger.info(f"[{job_id}] Detected domain: {detected_domain}")
+        logger.info(f"[{job_id}] Extracted {len(resume_skills)} resume skills, {len(jd_skills)} JD skills")
         
+        logger.info(f"[{job_id}] Computing gap vector")
+        _set_job(job_id, {"message": "Computing skill gaps", "updated_at": _utc_now()})
         gap_vector = compute_gap_vector(resume_skills, jd_skills)
-        print(f"DEBUG: Computed {len(gap_vector)} gaps")
+        logger.info(f"[{job_id}] Computed {len(gap_vector)} gaps")
 
         if CATALOG is None:
             raise RuntimeError(CATALOG_ERROR or "Course catalog is unavailable")
 
-        pathway = generate_adaptive_pathway(gap_vector, CATALOG)
+        logger.info(f"[{job_id}] Generating adaptive pathway")
+        _set_job(job_id, {"message": "Generating adaptive learning pathway", "updated_at": _utc_now()})
+        pathway = generate_adaptive_pathway(gap_vector, CATALOG, detected_domain=detected_domain)
 
         # Compute Metrics
         required_skills = [s for s in jd_skills if s.is_required]
@@ -198,11 +216,13 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
             redundancy_reduction=round(redundancy_reduction, 2)
         )
 
+        logger.info(f"[{job_id}] Analysis job completed successfully")
+
         _set_job(
             job_id,
             {
-                "job_id": job_id,
                 "status": "completed",
+                "message": "Analysis complete",
                 "updated_at": _utc_now(),
                 "result": result.model_dump(),
             },
@@ -210,11 +230,12 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
     except Exception as exc:
         import traceback
         traceback.print_exc()
+        logger.error(f"[{job_id}] Analysis job failed: {exc}")
         _set_job(
             job_id,
             {
-                "job_id": job_id,
                 "status": "failed",
+                "message": "Analysis failed",
                 "updated_at": _utc_now(),
                 "error": {
                     "code": "analysis_failed",

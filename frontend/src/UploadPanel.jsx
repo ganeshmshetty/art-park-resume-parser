@@ -2,8 +2,6 @@ import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { CheckCircle2, FileText, ClipboardList, Paperclip, AlertTriangle, Rocket } from "lucide-react";
 
-const DOMAINS = ["Technology", "Operations", "Sales", "Healthcare"];
-
 function FileDropZone({ label, icon, file, onDrop, accept }) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: useCallback((accepted) => { if (accepted[0]) onDrop(accepted[0]); }, [onDrop]),
@@ -37,7 +35,6 @@ function FileDropZone({ label, icon, file, onDrop, accept }) {
 export default function UploadPanel({ onSubmit, error }) {
   const [resume, setResume] = useState(null);
   const [jd, setJd] = useState(null);
-  const [domain, setDomain] = useState("Technology");
 
   const ACCEPT = {
     "application/pdf": [".pdf"],
@@ -47,7 +44,7 @@ export default function UploadPanel({ onSubmit, error }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (resume && jd) onSubmit({ resume, jd, domain });
+    if (resume && jd) onSubmit({ resume, jd });
   }
 
   return (
@@ -76,20 +73,6 @@ export default function UploadPanel({ onSubmit, error }) {
         />
       </div>
 
-      <div className="domain-row">
-        <span className="domain-label">Target Domain</span>
-        <select
-          id="domain-select"
-          className="domain-select"
-          value={domain}
-          onChange={(e) => setDomain(e.target.value)}
-        >
-          {DOMAINS.map((d) => (
-            <option key={d} value={d}>{d}</option>
-          ))}
-        </select>
-      </div>
-
       {error && (
         <div className="error-banner">
           <AlertTriangle size={18} strokeWidth={2.5} style={{ display: "inline-block", verticalAlign: "text-bottom", marginRight: 6 }} /> {error}
@@ -102,7 +85,14 @@ export default function UploadPanel({ onSubmit, error }) {
         className="btn-analyze"
         disabled={!resume || !jd}
       >
-        {resume && jd ? <><Rocket size={20} strokeWidth={2.5} style={{ display: "inline-block", verticalAlign: "text-bottom", marginRight: 8 }} /> Analyze — {domain}</> : "Select both files to continue"}
+        {resume && jd ? (
+          <>
+            <Rocket size={20} strokeWidth={2.5} style={{ display: "inline-block", verticalAlign: "text-bottom", marginRight: 8 }} />
+            Analyze Profile
+          </>
+        ) : (
+          "Select both files to continue"
+        )}
       </button>
     </form>
   );

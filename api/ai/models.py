@@ -55,6 +55,7 @@ class AnalysisResult(BaseModel):
     resume_skills: List[ExtractedSkill]
     jd_skills: List[JDSkill]
     gap_vector: List[GapItem]
+    detected_domain: Optional[str] = "General"
     pathway: Optional[AdaptivePathway] = None
     reasoning_traces: List[ReasoningTrace]
     coverage_score: float        # % of JD skills covered

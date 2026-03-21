@@ -158,7 +158,7 @@ export default function App() {
                   className="btn-reset"
                   onClick={handleReset}
                 >
-                  \u2190 New Analysis
+                  New Analysis
                 </button>
               </div>
 

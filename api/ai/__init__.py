@@ -28,7 +28,7 @@ def analyze(
 
     # Step 1: Extract
     resume_skills = extract_resume_skills(resume_text)
-    jd_skills = extract_jd_skills(jd_text)
+    detected_domain, jd_skills = extract_jd_skills(jd_text)
 
     # Step 2: Anchor to O*NET
     resume_skills = anchor_to_onet(resume_skills)
@@ -59,6 +59,7 @@ def analyze(
         "resume_skills": [s.dict() for s in resume_skills],
         "jd_skills": [s.dict() for s in jd_skills],
         "gap_vector": [g.dict() for g in gap_vector],
+        "detected_domain": detected_domain,
         "reasoning_traces": [t.dict() for t in traces],
         "coverage_score": coverage_score,
         "redundancy_reduction": redundancy_reduction,

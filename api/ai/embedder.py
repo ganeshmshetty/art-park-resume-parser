@@ -194,88 +194,25 @@ def _embed_texts(texts: list[str], task_type: str) -> dict[str, list[float]]:
 
     return {t: _embedding_cache[t] for t in texts if t in _embedding_cache}
 
-def _get_onet_data(path="data/onet_skills.json"):
-    global _onet_cache
-    if _onet_cache is not None:
-        return _onet_cache
-
-    # Try multiple candidate paths
-    candidates = [path, "../data/onet_skills.json"]
-    found_path = None
-    for p in candidates:
-        if os.path.exists(p):
-            found_path = p
-            break
-
-    if found_path is None:
-        return []
-        
-    with open(found_path) as f:
-        data = json.load(f)
-        
-    _onet_cache = data
-    return _onet_cache
-
-
-def _get_onet_index() -> dict[str, Any]:
-    global _onet_index_cache
-    if _onet_index_cache is not None:
-        return _onet_index_cache
-
-    onet_nodes = _get_onet_data()
-    title_map: dict[str, str] = {}
-    alias_map: dict[str, str] = {}
-    id_to_title: dict[str, str] = {}
-    token_to_ids: dict[str, set[str]] = {}
-
-    for n in onet_nodes:
-        sid = n["id"]
-        title = _normalize_text(n["title"])
-        title_map[title] = sid
-        id_to_title[sid] = n["title"]
-
-        for token in _tokenize(title):
-            token_to_ids.setdefault(token, set()).add(sid)
-
-        for alias in n.get("aliases", []):
-            alias_norm = _normalize_text(alias)
-            alias_map[alias_norm] = sid
-            for token in _tokenize(alias_norm):
-                token_to_ids.setdefault(token, set()).add(sid)
-
-    _onet_index_cache = {
-        "title_map": title_map,
-        "alias_map": alias_map,
-        "id_to_title": id_to_title,
-        "token_to_ids": token_to_ids,
-    }
-    return _onet_index_cache
-
-
-def _candidate_ids_for_name(name: str, token_to_ids: dict[str, set[str]], limit: int) -> list[str]:
-    score: dict[str, int] = {}
-    for tok in _tokenize(name):
-        for sid in token_to_ids.get(tok, set()):
-            score[sid] = score.get(sid, 0) + 1
-
-    ranked = sorted(score.items(), key=lambda kv: kv[1], reverse=True)
-    return [sid for sid, _ in ranked[:limit]]
+def _get_db_connection():
+    import sqlite3
+    db_path = "data/onet.sqlite"
+    if not os.path.exists(db_path):
+        db_path = "../data/onet.sqlite"
+    return sqlite3.connect(db_path)
 
 def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
     """
-    Match a list of ExtractedSkill or JDSkill to canonical O*NET nodes.
-    Uses multi-stage matching: exact title → alias → common skill map → substring match.
+    Match a list of ExtractedSkill or JDSkill to canonical O*NET nodes using SQLite.
+    Uses multi-stage matching: exact title → alias → common skill map → FTS semantic → substring match.
     Mutates onet_id in place. Returns the same list.
     """
-    onet_nodes = _get_onet_data()
-    if not onet_nodes:
-        return skills  # graceful degradation if data not ready
-
-    index = _get_onet_index()
-    title_map = index["title_map"]
-    alias_map = index["alias_map"]
-    id_to_title = index["id_to_title"]
-    token_to_ids = index["token_to_ids"]
+    try:
+        conn = _get_db_connection()
+        cursor = conn.cursor()
+    except Exception as e:
+        print(f"[Embedder] Failed to connect to SQLite DB: {e}")
+        return skills
 
     unresolved = []
     
@@ -286,13 +223,17 @@ def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
         name = _normalize_text(skill.name)
         
         # Stage 1: Exact title match
-        if name in title_map:
-            skill.onet_id = title_map[name]
+        cursor.execute("SELECT id FROM skills WHERE LOWER(title) = ?", (name,))
+        row = cursor.fetchone()
+        if row:
+            skill.onet_id = row[0]
             continue
         
         # Stage 2: Alias match
-        if name in alias_map:
-            skill.onet_id = alias_map[name]
+        cursor.execute("SELECT skill_id FROM aliases WHERE LOWER(alias) = ?", (name,))
+        row = cursor.fetchone()
+        if row:
+            skill.onet_id = row[0]
             continue
         
         # Stage 3: Common tech aliases
@@ -302,7 +243,7 @@ def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
 
         unresolved.append(skill)
 
-    # Stage 4: Gemini embedding semantic retrieval fallback.
+    # Stage 4: Gemini embedding semantic retrieval fallback
     if unresolved and _is_embedding_enabled():
         semantic_threshold = threshold if threshold != 0.82 else EMBEDDING_THRESHOLD
         query_texts = [_normalize_text(s.name) for s in unresolved]
@@ -313,44 +254,55 @@ def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
             if query_vec is None:
                 continue
 
-            candidate_ids = _candidate_ids_for_name(
-                query_text,
-                token_to_ids,
-                EMBEDDING_MAX_CANDIDATES,
-            )
-            if not candidate_ids:
+            tokens = _tokenize(query_text)
+            if not tokens:
+                continue
+            
+            # Simple FTS OR query to get candidate matches quickly
+            fts_query = " OR ".join(tokens)
+            try:
+                cursor.execute("SELECT id, title FROM skills_fts WHERE skills_fts MATCH ? LIMIT ?", 
+                               (fts_query, EMBEDDING_MAX_CANDIDATES))
+                candidates = cursor.fetchall()
+            except Exception as e:
+                print(f"[Embedder] FTS error: {e}")
+                continue
+                
+            if not candidates:
                 continue
 
-            candidate_texts = [id_to_title[sid] for sid in candidate_ids if sid in id_to_title]
+            candidate_texts = [row[1] for row in candidates]
+            # Handle multiple IDs with the same title gracefully
+            candidate_id_map = {row[1]: row[0] for row in candidates}
+            
             candidate_vectors = _embed_texts(candidate_texts, task_type="RETRIEVAL_DOCUMENT")
             if not candidate_vectors:
                 continue
 
             best_sid = None
             best_score = -1.0
-            for sid in candidate_ids:
-                ctext = id_to_title.get(sid)
-                if not ctext:
-                    continue
+            for ctext, cid in candidate_id_map.items():
                 cvec = candidate_vectors.get(ctext)
                 if cvec is None:
                     continue
                 score = _dot_similarity(query_vec, cvec)
                 if score > best_score:
                     best_score = score
-                    best_sid = sid
+                    best_sid = cid
 
             if best_sid and best_score >= semantic_threshold:
                 skill.onet_id = best_sid
 
-    # Stage 5: conservative substring fallback for remaining unresolved skills.
-    for skill in skills:
+    # Stage 5: conservative substring fallback
+    for skill in unresolved:
         if skill.onet_id:
             continue
         name = _normalize_text(skill.name)
-        for title, sid in title_map.items():
-            if len(name) > 3 and (name in title or title in name):
-                skill.onet_id = sid
-                break
+        if len(name) > 3:
+            cursor.execute("SELECT id FROM skills WHERE LOWER(title) LIKE ?", (f"%{name}%",))
+            row = cursor.fetchone()
+            if row:
+                skill.onet_id = row[0]
     
+    conn.close()
     return skills

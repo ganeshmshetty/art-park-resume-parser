@@ -63,10 +63,40 @@ def extract_resume_skills(resume_text: str) -> list[ExtractedSkill]:
             continue
     return skills
 
-def extract_jd_skills(jd_text: str) -> list[JDSkill]:
+def extract_jd_skills(jd_text: str) -> tuple[str, list[JDSkill]]:
+    """
+    Returns (detected_domain, list_of_jd_skills).
+    The LLM now returns a JSON object with 'detected_domain' and 'skills'.
+    """
     prompt = JD_EXTRACTION_PROMPT.format(jd_text=jd_text[:4000])
     raw = _call_llm(prompt)
-    items = _parse_json_safely(raw)
+    
+    # Parse the response — could be a dict (new format) or list (old format)
+    cleaned = re.sub(r"```json|```", "", raw).strip()
+    try:
+        parsed = json.loads(cleaned)
+    except json.JSONDecodeError:
+        # Try to find a JSON object
+        match = re.search(r'\{.*\}', cleaned, re.DOTALL)
+        if match:
+            parsed = json.loads(match.group())
+        else:
+            # Fallback: try to find old-style array
+            match = re.search(r'\[.*\]', cleaned, re.DOTALL)
+            if match:
+                parsed = json.loads(match.group())
+            else:
+                return ("General", [])
+    
+    # Handle both formats
+    if isinstance(parsed, dict):
+        detected_domain = parsed.get("detected_domain", "General")
+        items = parsed.get("skills", [])
+    elif isinstance(parsed, list):
+        detected_domain = "General"
+        items = parsed
+    else:
+        return ("General", [])
 
     skills = []
     for item in items:
@@ -79,4 +109,4 @@ def extract_jd_skills(jd_text: str) -> list[JDSkill]:
             ))
         except Exception:
             continue
-    return skills
+    return (detected_domain, skills)

@@ -1,117 +1,11 @@
 [
   {
-    "id": "mod_py_foundations",
-    "title": "Python Foundations",
-    "description": "Core Python syntax, data structures, OOP, and standard library essentials.",
+    "id": "mod_scientific_software_fundamentals",
+    "title": "Introduction to Analytical and Scientific Software Applications",
+    "description": "This module introduces the fundamentals of using analytical and scientific software, covering basic data input, manipulation, and visualization techniques. Learners will gain a foundational understanding of how these tools are applied in various scientific domains.",
     "skill_ids": [
-      "TECH-4235227b5143"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_py_intermediate",
-    "title": "Intermediate Python",
-    "description": "Decorators, generators, async/await, type hints, and packaging.",
-    "skill_ids": [
-      "TECH-4235227b5143"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 90,
-    "prerequisites": [
-      "mod_py_foundations"
-    ]
-  },
-  {
-    "id": "mod_py_advanced",
-    "title": "Advanced Python Engineering",
-    "description": "Metaclasses, C extensions, memory profiling, and production-grade patterns.",
-    "skill_ids": [
-      "TECH-4235227b5143"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 120,
-    "prerequisites": [
-      "mod_py_intermediate"
-    ]
-  },
-  {
-    "id": "mod_js_foundations",
-    "title": "JavaScript Foundations",
-    "description": "ES6+ syntax, DOM manipulation, closures, promises, and event loop.",
-    "skill_ids": [
-      "TECH-b6e13ad53d8e"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_js_advanced",
-    "title": "Advanced JavaScript & TypeScript",
-    "description": "Advanced patterns, TypeScript generics, module systems, and build tooling.",
-    "skill_ids": [
-      "TECH-b6e13ad53d8e",
-      "TECH-fb9da861bdb8"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 120,
-    "prerequisites": [
-      "mod_js_foundations"
-    ]
-  },
-  {
-    "id": "mod_ts_fundamentals",
-    "title": "TypeScript Fundamentals",
-    "description": "Static typing, interfaces, generics, and TypeScript tooling.",
-    "skill_ids": [
-      "TECH-fb9da861bdb8"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_js_foundations"
-    ]
-  },
-  {
-    "id": "mod_go_foundations",
-    "title": "Go Programming Foundations",
-    "description": "Go syntax, goroutines, channels, interfaces, and error handling.",
-    "skill_ids": [
-      "TECH-1ec558a60b5d"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_go_advanced",
-    "title": "Advanced Go Engineering",
-    "description": "Concurrency patterns, reflection, CGo, performance tuning.",
-    "skill_ids": [
-      "TECH-1ec558a60b5d"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 120,
-    "prerequisites": [
-      "mod_go_foundations"
-    ]
-  },
-  {
-    "id": "mod_cpp_foundations",
-    "title": "C++ Foundations",
-    "description": "C++ syntax, pointers, memory management, STL, templates.",
-    "skill_ids": [
-      "TECH-372946aa2608"
+      "TECH-efea570b4f26",
+      "TECH-d082cb3ee482"
     ],
     "domain": "Technology",
     "level": "Beginner",
@@ -119,117 +13,89 @@
     "prerequisites": []
   },
   {
-    "id": "mod_cpp_advanced",
-    "title": "Advanced C++ & Modern Standards",
-    "description": "C++17/20 features, smart pointers, move semantics, multithreading.",
+    "id": "mod_intermediate_modeling_simulation",
+    "title": "Intermediate Modeling and Simulation with Analytical Software",
+    "description": "This module builds upon the fundamentals, focusing on modeling and simulation techniques using analytical software. Learners will explore more advanced functionalities for data analysis, model building, and result interpretation.",
     "skill_ids": [
-      "TECH-372946aa2608"
+      "TECH-ff45084025e9",
+      "TECH-cd68d447b969",
+      "TECH-3f2abb5b47e9"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_scientific_software_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_advanced_customization_optimization",
+    "title": "Advanced Customization and Optimization in Scientific Software Environments",
+    "description": "This advanced module delves into customization and optimization techniques within scientific software environments. Learners will focus on scripting, automation, and advanced problem-solving using the software's capabilities.",
+    "skill_ids": [
+      "TECH-0ac4b3f64f2f",
+      "TECH-8cd6a7baf4f6",
+      "TECH-e3b767a6e53f"
     ],
     "domain": "Technology",
     "level": "Advanced",
     "duration_min": 120,
     "prerequisites": [
-      "mod_cpp_foundations"
+      "mod_intermediate_modeling_simulation"
     ]
   },
   {
-    "id": "mod_csharp_fundamentals",
-    "title": "C# & .NET Fundamentals",
-    "description": "C# syntax, LINQ, async patterns, and .NET ecosystem.",
+    "id": "mod_intro_database_queries",
+    "title": "Introduction to Database Querying and User Interfaces",
+    "description": "This module provides a foundational understanding of database user interfaces and basic query construction. Learners will master fundamental database concepts and perform simple data retrieval.",
     "skill_ids": [
-      "TECH-2e26e62208e9"
+      "TECH-0113ae8172a3",
+      "TECH-88c0cc5f5b58"
     ],
     "domain": "Technology",
     "level": "Beginner",
-    "duration_min": 60,
+    "duration_min": 90,
     "prerequisites": []
   },
   {
-    "id": "mod_ruby_fundamentals",
-    "title": "Ruby Programming Fundamentals",
-    "description": "Ruby syntax, blocks, metaprogramming, and Rails basics.",
+    "id": "mod_intermediate_query_design",
+    "title": "Intermediate Query Design and UI Navigation Techniques",
+    "description": "This module builds upon the basics, focusing on constructing more complex queries and navigating database user interfaces efficiently. Learners will develop skills in filtering, sorting, and joining data.",
     "skill_ids": [
-      "TECH-18e40e1401ee"
+      "TECH-36b3ccf8f6aa",
+      "TECH-9e3b8bb540db",
+      "TECH-1c8f0388f652"
     ],
     "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_react_basics",
-    "title": "React.js Fundamentals",
-    "description": "JSX, components, hooks, state management, and React ecosystem.",
-    "skill_ids": [
-      "TECH-6b810c90aa9a"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 60,
+    "level": "Intermediate",
+    "duration_min": 120,
     "prerequisites": [
-      "mod_js_foundations"
+      "mod_intro_database_queries"
     ]
   },
   {
-    "id": "mod_react_advanced",
-    "title": "Advanced React Patterns",
-    "description": "Context API, Redux, performance optimization, SSR, and testing.",
+    "id": "mod_advanced_database_management",
+    "title": "Advanced Database Query Optimization and Interface Customization",
+    "description": "This module explores advanced techniques for optimizing database queries and customizing user interfaces for specific needs. Learners will gain expertise in performance tuning and advanced data manipulation.",
     "skill_ids": [
-      "TECH-6b810c90aa9a"
+      "TECH-7d49f6e94aeb",
+      "TECH-dffd2ccccbd7",
+      "TECH-eb0de80de53a"
     ],
     "domain": "Technology",
     "level": "Advanced",
     "duration_min": 120,
     "prerequisites": [
-      "mod_react_basics"
+      "mod_intermediate_query_design"
     ]
   },
   {
-    "id": "mod_node_fundamentals",
-    "title": "Node.js Fundamentals",
-    "description": "Server-side JavaScript, Express, middleware, and REST API design.",
+    "id": "mod_intro_medical_software",
+    "title": "Introduction to Medical Software: Terminology and Basic Navigation",
+    "description": "This module introduces fundamental medical software concepts, common terminology, and basic navigation within Electronic Health Record (EHR) systems.",
     "skill_ids": [
-      "TECH-90de35a5800e"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_js_foundations"
-    ]
-  },
-  {
-    "id": "mod_node_advanced",
-    "title": "Advanced Node.js",
-    "description": "Streams, clustering, microservices, and production deployment.",
-    "skill_ids": [
-      "TECH-90de35a5800e"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 90,
-    "prerequisites": [
-      "mod_node_fundamentals"
-    ]
-  },
-  {
-    "id": "mod_git_version_control",
-    "title": "Git & Version Control",
-    "description": "Branching strategies, rebasing, cherry-picking, and collaborative workflows.",
-    "skill_ids": [
-      "TECH-46f1a0bd5592"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_linux_essentials",
-    "title": "Linux System Administration Essentials",
-    "description": "Shell scripting, file systems, process management, networking, and permissions.",
-    "skill_ids": [
-      "TECH-ba324ca7b1c7"
+      "TECH-8e8ebde89eb8",
+      "TECH-ed9017c703e8"
     ],
     "domain": "Technology",
     "level": "Beginner",
@@ -237,81 +103,179 @@
     "prerequisites": []
   },
   {
-    "id": "mod_linux_advanced",
-    "title": "Advanced Linux Administration",
-    "description": "Kernel tuning, systemd, security hardening, and containerization foundations.",
+    "id": "mod_intermediate_ehr_workflows",
+    "title": "EHR Workflow Management: Data Entry, Reporting, and Compliance",
+    "description": "Learners will master data entry protocols, generate reports, and understand compliance requirements within various medical software applications.",
     "skill_ids": [
-      "TECH-ba324ca7b1c7"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 90,
-    "prerequisites": [
-      "mod_linux_essentials"
-    ]
-  },
-  {
-    "id": "mod_docker_fundamentals",
-    "title": "Docker Containerization",
-    "description": "Dockerfile, images, containers, volumes, networking, and Docker Compose.",
-    "skill_ids": [
-      "TECH-e982f17bcbe0"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_linux_essentials"
-    ]
-  },
-  {
-    "id": "mod_docker_advanced",
-    "title": "Advanced Docker & Container Orchestration",
-    "description": "Multi-stage builds, security scanning, Swarm, and production patterns.",
-    "skill_ids": [
-      "TECH-e982f17bcbe0"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 90,
-    "prerequisites": [
-      "mod_docker_fundamentals"
-    ]
-  },
-  {
-    "id": "mod_k8s_fundamentals",
-    "title": "Kubernetes Fundamentals",
-    "description": "Pods, deployments, services, ConfigMaps, and kubectl essentials.",
-    "skill_ids": [
-      "TECH-adc1f5c8707f"
+      "TECH-8842c580df36",
+      "TECH-e0a605f1afdf",
+      "TECH-b799e5d96d07"
     ],
     "domain": "Technology",
     "level": "Intermediate",
     "duration_min": 90,
     "prerequisites": [
-      "mod_docker_fundamentals"
+      "mod_intro_medical_software"
     ]
   },
   {
-    "id": "mod_k8s_advanced",
-    "title": "Advanced Kubernetes Operations",
-    "description": "Helm, Operators, RBAC, Istio service mesh, and cluster management.",
+    "id": "mod_advanced_software_integration",
+    "title": "Advanced Medical Software Integration: Customization and Optimization",
+    "description": "This module focuses on advanced features such as software customization, system optimization, and integrating various medical software platforms for enhanced workflow efficiency.",
     "skill_ids": [
-      "TECH-adc1f5c8707f"
+      "TECH-da234dbbff48",
+      "TECH-bfcaa7934ed9",
+      "TECH-7c789abd74db"
     ],
     "domain": "Technology",
     "level": "Advanced",
     "duration_min": 120,
     "prerequisites": [
-      "mod_k8s_fundamentals"
+      "mod_intermediate_ehr_workflows"
     ]
   },
   {
-    "id": "mod_postgresql_fundamentals",
-    "title": "PostgreSQL Database Fundamentals",
-    "description": "SQL queries, schema design, indexing, transactions, and performance tuning.",
+    "id": "mod_financial_analysis_fundamentals",
+    "title": "Financial Analysis Software: Core Concepts and Data Entry",
+    "description": "This module introduces the fundamental concepts of financial analysis software and focuses on accurate data entry and manipulation. Learners will master basic software navigation and data input techniques.",
     "skill_ids": [
-      "TECH-519968cbed98"
+      "TECH-9bfddf7bc7ce",
+      "TECH-b9a14be6e436"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_advanced_reporting",
+    "title": "Financial Analysis Software: Advanced Reporting and Visualization",
+    "description": "This module focuses on generating insightful reports and visualizations using financial analysis software. Learners will master advanced reporting features and data visualization techniques for effective communication of financial insights.",
+    "skill_ids": [
+      "TECH-fcc7040eff59",
+      "TECH-573e2da7382f",
+      "TECH-73227c471b66"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_financial_analysis_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_predictive_modeling",
+    "title": "Financial Analysis Software: Predictive Modeling and Scenario Analysis",
+    "description": "This module delves into predictive modeling and scenario analysis using financial analysis software. Learners will master building predictive models and conducting scenario analysis to inform strategic financial decisions.",
+    "skill_ids": [
+      "TECH-71b37b96bcf7",
+      "TECH-a3c322c15150",
+      "TECH-1cd7866a3ca3"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_advanced_reporting"
+    ]
+  },
+  {
+    "id": "mod_cad_fundamentals",
+    "title": "CAD Software Essentials: 2D Drafting and Basic 3D Modeling",
+    "description": "Master the fundamentals of CAD software, including 2D drafting techniques and basic 3D modeling principles for creating simple designs.",
+    "skill_ids": [
+      "TECH-58b2c21cf029",
+      "TECH-6dbf95e61f87"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_intermediate_3d",
+    "title": "Intermediate CAD: Advanced 3D Modeling and Assembly Design",
+    "description": "Develop proficiency in advanced 3D modeling techniques, including complex surface creation, assembly design, and parametric modeling.",
+    "skill_ids": [
+      "TECH-3dc7b10e3f47",
+      "TECH-ec0f79f56fb8",
+      "TECH-431a5bac5c89"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_cad_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_cad_simulation_printing",
+    "title": "Advanced CAD: Simulation, 3D Printing, and Urban Modeling",
+    "description": "Explore advanced CAD applications, including simulation for design validation, 3D printing workflow, and introduction to 3D urban simulation modeling.",
+    "skill_ids": [
+      "TECH-16e25a62c8ea",
+      "TECH-e8528e74e83d",
+      "TECH-422d74528fc0"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_intermediate_3d"
+    ]
+  },
+  {
+    "id": "mod_erp_fundamentals",
+    "title": "ERP Systems: Core Concepts and Introduction to Key Modules",
+    "description": "Learn the fundamental principles of Enterprise Resource Planning (ERP) systems and gain a basic understanding of common modules like finance, HR, and supply chain.",
+    "skill_ids": [
+      "TECH-3fd820996263",
+      "TECH-a05ee17b379f"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_erp_data_analysis",
+    "title": "Data Analysis & Reporting within ERP Systems: Intermediate Skills",
+    "description": "Master data analysis techniques within ERP systems, including generating reports, identifying trends, and using data for decision-making.",
+    "skill_ids": [
+      "TECH-7bbd671c96d2",
+      "TECH-fa27299935dd",
+      "TECH-3524f4b8afeb"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_erp_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_erp_customization",
+    "title": "Advanced ERP Customization & Integration: Workflow Automation",
+    "description": "Explore advanced ERP customization techniques, focusing on workflow automation, system integration, and tailoring ERP solutions to specific business needs.",
+    "skill_ids": [
+      "TECH-ce9d630477e0",
+      "TECH-facc044fa0e4",
+      "TECH-8041734a5d5a"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_erp_data_analysis"
+    ]
+  },
+  {
+    "id": "mod_hr_software_fundamentals",
+    "title": "HR Software Fundamentals: Navigating Core HRIS Modules",
+    "description": "Gain a foundational understanding of HR software systems and their basic functions, including employee data management and reporting. Learners will master navigating common HRIS modules.",
+    "skill_ids": [
+      "TECH-580134e1876b",
+      "TECH-f37e42746200"
     ],
     "domain": "Technology",
     "level": "Beginner",
@@ -319,25 +283,134 @@
     "prerequisites": []
   },
   {
-    "id": "mod_postgresql_advanced",
-    "title": "Advanced PostgreSQL",
-    "description": "Query optimization, replication, partitioning, and PL/pgSQL.",
+    "id": "mod_hr_software_reporting",
+    "title": "Intermediate HR Software: Advanced Reporting and Analytics",
+    "description": "Develop skills in generating custom reports, analyzing HR data, and interpreting key performance indicators (KPIs) within HR software. Students will be able to leverage data for informed decision-making.",
     "skill_ids": [
-      "TECH-519968cbed98"
+      "TECH-608ae65c4d35",
+      "TECH-fc27ee6fe54e",
+      "TECH-3bcb472571fd"
     ],
     "domain": "Technology",
-    "level": "Advanced",
+    "level": "Intermediate",
     "duration_min": 90,
     "prerequisites": [
-      "mod_postgresql_fundamentals"
+      "mod_hr_software_fundamentals"
     ]
   },
   {
-    "id": "mod_mysql_fundamentals",
-    "title": "MySQL Database Fundamentals",
-    "description": "MySQL setup, queries, joins, stored procedures, and InnoDB engine.",
+    "id": "mod_hr_software_configuration",
+    "title": "Advanced HR Software: System Configuration and Integration",
+    "description": "Master advanced HR software configuration, system integration, and customization to meet specific organizational needs. Learners will be able to configure workflows, manage security settings, and integrate HR software with other business systems.",
     "skill_ids": [
-      "TECH-f460c882a18c"
+      "TECH-593ec0e5890a",
+      "TECH-30433604dbe2",
+      "TECH-33b0717b6a75"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_hr_software_reporting"
+    ]
+  },
+  {
+    "id": "mod_graphics_basics_fundamentals",
+    "title": "Introduction to Digital Imaging: Principles and Software Overview",
+    "description": "This module covers the fundamental principles of digital imaging and provides an overview of common graphics software interfaces and tools. Learners will gain basic proficiency in image manipulation and creation.",
+    "skill_ids": [
+      "TECH-9acf8bdac972",
+      "TECH-48f52ee2fc6c"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_intermediate_photo_editing",
+    "title": "Advanced Photo Editing Techniques: Retouching and Compositing",
+    "description": "This module focuses on advanced photo editing techniques, including retouching, compositing, and color correction using industry-standard software. Learners will develop skills in creating professional-quality images.",
+    "skill_ids": [
+      "TECH-ba349eb01273",
+      "TECH-0c473a7a972b",
+      "TECH-849f26bedf1c"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_graphics_basics_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_advanced_3d_graphics",
+    "title": "3D Graphics Design: Modeling, Rendering, and Animation",
+    "description": "This module explores advanced 3D graphics design, covering modeling, rendering, and animation techniques. Learners will create complex 3D models and animations using specialized software.",
+    "skill_ids": [
+      "TECH-7ede31e5ccf0",
+      "TECH-bc1d03ddbe57",
+      "TECH-423674108891"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_intermediate_photo_editing"
+    ]
+  },
+  {
+    "id": "mod_project_soft_basics",
+    "title": "Project Management Software Fundamentals: An Introductory Course",
+    "description": "Learn the core features and functions of project management software, understanding how to create tasks, assign resources, and track progress. This module will provide a foundation for using project management tools effectively.",
+    "skill_ids": [
+      "TECH-5f13d151f2a3",
+      "TECH-aa6b076923d9"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_advanced_project_tools",
+    "title": "Intermediate Project Management: Scheduling and Resource Optimization",
+    "description": "Master advanced techniques for scheduling tasks, managing resources efficiently, and analyzing project data using project management software. You'll learn to optimize project workflows and improve team collaboration.",
+    "skill_ids": [
+      "TECH-aa5ca0967d0b",
+      "TECH-a6d3558a647d",
+      "TECH-8a5f4c48d670"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_project_soft_basics"
+    ]
+  },
+  {
+    "id": "mod_expert_project_analysis",
+    "title": "Expert Project Management: Integration, Reporting, and Strategic Analysis",
+    "description": "Develop expertise in integrating project management software with other systems, generating custom reports, and conducting strategic project analysis. This module will enable you to leverage project data for informed decision-making and organizational improvement.",
+    "skill_ids": [
+      "TECH-88391d8f3945",
+      "TECH-d57d40a2a8be",
+      "TECH-57013c031f11"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_advanced_project_tools"
+    ]
+  },
+  {
+    "id": "mod_document_software_basics",
+    "title": "Introduction to Document Management Software: Core Concepts",
+    "description": "This module introduces fundamental concepts and functionalities of document management software, covering basic document creation, storage, and retrieval.",
+    "skill_ids": [
+      "TECH-1b99db13c95b",
+      "TECH-123f292bf531"
     ],
     "domain": "Technology",
     "level": "Beginner",
@@ -345,12 +418,179 @@
     "prerequisites": []
   },
   {
-    "id": "mod_mongodb_fundamentals",
-    "title": "MongoDB & NoSQL Fundamentals",
-    "description": "Document model, CRUD operations, aggregation pipelines, and indexing.",
+    "id": "mod_intermediate_workflows",
+    "title": "Advanced Document Workflows and Automation Techniques",
+    "description": "Explore advanced document workflows, automation features, and collaboration tools within document management systems for enhanced efficiency.",
     "skill_ids": [
-      "TECH-7f1c982e835a",
-      "TECH-e6c5f6d71fd5"
+      "TECH-2fad088a4a0a",
+      "TECH-138537d2e62e",
+      "TECH-9ec550620e08"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_document_software_basics"
+    ]
+  },
+  {
+    "id": "mod_advanced_integration_security",
+    "title": "Document Management Integration, Security, and Compliance",
+    "description": "Master integration strategies, security protocols, and compliance regulations related to document management systems for enterprise environments.",
+    "skill_ids": [
+      "TECH-531fc4b65bbe",
+      "TECH-83f8a38f0240",
+      "TECH-345bf1f6cd9e"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_intermediate_workflows"
+    ]
+  },
+  {
+    "id": "mod_intro_dev_tools",
+    "title": "Introduction to Development Environments and Basic Scripting",
+    "description": "This module introduces fundamental concepts of development environments and teaches basic scripting skills using a scripting language. Learners will master the basics of using an interpreter and running simple scripts.",
+    "skill_ids": [
+      "TECH-e1def8878003",
+      "TECH-8f725c1721ff"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_intermediate_dev_env",
+    "title": "Intermediate Development Environments: Compilers and Debugging",
+    "description": "This module builds upon the fundamentals and explores compilers, debuggers, and more advanced scripting techniques. Learners will gain proficiency in compiling code, identifying, and fixing errors efficiently.",
+    "skill_ids": [
+      "TECH-03dddfbac0e0",
+      "TECH-f3662a53edb0",
+      "TECH-00dbc48aa9a9"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_intro_dev_tools"
+    ]
+  },
+  {
+    "id": "mod_advanced_dev_env",
+    "title": "Advanced Development Environments: Automation and Integration",
+    "description": "This module covers advanced techniques for automating tasks within development environments and integrating different tools. Learners will master environment configuration, scripting for automation, and tool integration.",
+    "skill_ids": [
+      "TECH-a3c2e63000e0",
+      "TECH-1a382809b7c0",
+      "TECH-216ccc3ad813"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_intermediate_dev_env"
+    ]
+  },
+  {
+    "id": "mod_mrp_fundamentals",
+    "title": "Introduction to Materials Requirements Planning and Logistics Software",
+    "description": "This module introduces the core concepts of Materials Requirements Planning (MRP) and explores different software applications used in logistics and supply chain management.",
+    "skill_ids": [
+      "TECH-786999982c86",
+      "TECH-7a07b432bd81"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_software_implementation",
+    "title": "Implementing and Configuring MRP Logistics and Supply Chain Software",
+    "description": "Learners will gain practical experience in configuring and implementing MRP, logistics, and supply chain software solutions, focusing on optimizing workflows and data management.",
+    "skill_ids": [
+      "TECH-cc43abb5ddf4",
+      "TECH-a0388531fc3c",
+      "TECH-61d73509c3fc"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_mrp_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_advanced_optimization",
+    "title": "Advanced Optimization Techniques in MRP and Supply Chain Software",
+    "description": "This module delves into advanced techniques for optimizing MRP systems and supply chain software, including predictive analytics and real-time data integration for enhanced decision-making.",
+    "skill_ids": [
+      "TECH-46eb4aaf2d75",
+      "TECH-d96f72185c32",
+      "TECH-645d3bba4e8a"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_software_implementation"
+    ]
+  },
+  {
+    "id": "mod_intro_industrial_control",
+    "title": "Introduction to Industrial Control Software: Fundamentals and Applications",
+    "description": "This module introduces the fundamentals of industrial control software and its applications in various industries, covering basic concepts and terminology.",
+    "skill_ids": [
+      "TECH-18e97c20018c",
+      "TECH-d677a1ca960d"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_configuring_supervisory_systems",
+    "title": "Configuring Supervisory Control Systems: A Practical Approach",
+    "description": "This module provides hands-on experience in configuring supervisory control systems using industrial control software, focusing on data acquisition and process monitoring.",
+    "skill_ids": [
+      "TECH-27853e056e8b",
+      "TECH-2918b3ec033e",
+      "TECH-17cabfa12aeb"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_intro_industrial_control"
+    ]
+  },
+  {
+    "id": "mod_advanced_ics_optimization",
+    "title": "Advanced Industrial Control Software: Optimization and Troubleshooting",
+    "description": "This module delves into advanced techniques for optimizing industrial control systems and troubleshooting complex issues using diagnostic tools and advanced configuration options.",
+    "skill_ids": [
+      "TECH-10d0f1e2636a",
+      "TECH-95aa8e7d8485",
+      "TECH-dfa5de5a399c"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_configuring_supervisory_systems"
+    ]
+  },
+  {
+    "id": "mod_accounting_software_basics",
+    "title": "Fundamentals of Accounting Software: Data Entry and Reporting",
+    "description": "This module introduces learners to the core functionalities of accounting software, focusing on accurate data entry, basic reporting, and account management.",
+    "skill_ids": [
+      "TECH-c7565df92ff9",
+      "TECH-aed7b6c9bb26"
     ],
     "domain": "Technology",
     "level": "Beginner",
@@ -358,152 +598,877 @@
     "prerequisites": []
   },
   {
-    "id": "mod_mongodb_advanced",
-    "title": "Advanced MongoDB & NoSQL Patterns",
-    "description": "Sharding, replication, schema design patterns, and Atlas deployment.",
+    "id": "mod_intermediate_software_analysis",
+    "title": "Intermediate Accounting Software: Financial Analysis and Reconciliation",
+    "description": "Learners will master intermediate accounting software skills, including financial analysis, reconciliation techniques, and generating customized reports.",
     "skill_ids": [
-      "TECH-7f1c982e835a",
-      "TECH-e6c5f6d71fd5"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 90,
-    "prerequisites": [
-      "mod_mongodb_fundamentals"
-    ]
-  },
-  {
-    "id": "mod_redis_fundamentals",
-    "title": "Redis In-Memory Data Store",
-    "description": "Data structures, caching patterns, pub/sub, and Redis Cluster.",
-    "skill_ids": [
-      "TECH-b840fc02d524"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 45,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_graphql_fundamentals",
-    "title": "GraphQL API Design",
-    "description": "Schema definition, resolvers, mutations, subscriptions, and tooling.",
-    "skill_ids": [
-      "TECH-9fdcc7f29c59"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_js_foundations"
-    ]
-  },
-  {
-    "id": "mod_ml_intro",
-    "title": "Introduction to Machine Learning",
-    "description": "Supervised/unsupervised learning, model evaluation, and scikit-learn.",
-    "skill_ids": [
-      "TECH-4235227b5143"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": [
-      "mod_py_foundations"
-    ]
-  },
-  {
-    "id": "mod_tensorflow_fundamentals",
-    "title": "TensorFlow Deep Learning",
-    "description": "Tensors, neural networks, Keras API, CNNs, and model training.",
-    "skill_ids": [
-      "TECH-3d3f421e9db6"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": [
-      "mod_ml_intro"
-    ]
-  },
-  {
-    "id": "mod_tensorflow_advanced",
-    "title": "Advanced TensorFlow & Production ML",
-    "description": "Custom layers, TF Serving, TFX pipelines, and distributed training.",
-    "skill_ids": [
-      "TECH-3d3f421e9db6"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 120,
-    "prerequisites": [
-      "mod_tensorflow_fundamentals"
-    ]
-  },
-  {
-    "id": "mod_pytorch_fundamentals",
-    "title": "PyTorch Deep Learning",
-    "description": "Autograd, nn.Module, training loops, and GPU acceleration.",
-    "skill_ids": [
-      "TECH-dfecc9eaf34d"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": [
-      "mod_ml_intro"
-    ]
-  },
-  {
-    "id": "mod_pytorch_advanced",
-    "title": "Advanced PyTorch & Research ML",
-    "description": "Custom datasets, distributed training, ONNX export, and optimization.",
-    "skill_ids": [
-      "TECH-dfecc9eaf34d"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 120,
-    "prerequisites": [
-      "mod_pytorch_fundamentals"
-    ]
-  },
-  {
-    "id": "mod_kafka_fundamentals",
-    "title": "Apache Kafka Fundamentals",
-    "description": "Topics, producers, consumers, consumer groups, and Kafka Streams.",
-    "skill_ids": [
-      "TECH-5dd9422f45dc"
+      "TECH-827bc79bd6ef",
+      "TECH-65ca71e58fec",
+      "TECH-c32059ca9222"
     ],
     "domain": "Technology",
     "level": "Intermediate",
     "duration_min": 90,
-    "prerequisites": []
+    "prerequisites": [
+      "mod_accounting_software_basics"
+    ]
   },
   {
-    "id": "mod_kafka_advanced",
-    "title": "Advanced Kafka & Event-Driven Architecture",
-    "description": "Schema Registry, exactly-once semantics, Connect, and KSQL.",
+    "id": "mod_advanced_software_optimization",
+    "title": "Advanced Accounting Software: System Optimization and Integration",
+    "description": "This module covers advanced accounting software techniques, focusing on system optimization, data integration, and workflow automation for efficiency.",
     "skill_ids": [
-      "TECH-5dd9422f45dc"
+      "TECH-72f4339e7a6a",
+      "TECH-c81180cf8574",
+      "TECH-5ab84599aebb"
     ],
     "domain": "Technology",
     "level": "Advanced",
     "duration_min": 120,
     "prerequisites": [
-      "mod_kafka_fundamentals"
+      "mod_intermediate_software_analysis"
     ]
   },
   {
-    "id": "mod_rabbitmq_fundamentals",
-    "title": "RabbitMQ Message Queuing",
-    "description": "Exchanges, queues, bindings, reliability patterns, and clustering.",
+    "id": "mod_crm_fundamentals",
+    "title": "CRM Software Essentials: Managing Customer Interactions and Data",
+    "description": "Learn the fundamental concepts of CRM software, including contact management, lead tracking, and basic reporting. Master the core functionalities of a CRM system to improve customer relationships.",
     "skill_ids": [
-      "TECH-d37a9628bc10"
+      "TECH-6ad052cff042",
+      "TECH-9c93cfe2a296"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_crm_intermediate",
+    "title": "Advanced CRM Strategies: Automation, Segmentation, and Analytics",
+    "description": "Develop advanced CRM skills, focusing on workflow automation, customer segmentation, and data analysis for targeted marketing campaigns. Enhance your ability to personalize customer experiences and drive sales growth.",
+    "skill_ids": [
+      "TECH-649106b88908",
+      "TECH-24613f0d3ca6",
+      "TECH-89d169bb01c6"
     ],
     "domain": "Technology",
     "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_crm_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_crm_expert_customization",
+    "title": "CRM Customization and Integration: Optimizing for Business Needs",
+    "description": "Explore advanced CRM customization options, including integrating third-party applications and creating custom reports. Learn to tailor CRM systems to meet specific business requirements and optimize workflows.",
+    "skill_ids": [
+      "TECH-ff9d338b48cf",
+      "TECH-29c562f946da",
+      "TECH-a5d970016627"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_crm_intermediate"
+    ]
+  },
+  {
+    "id": "mod_cbt_software_fundamentals",
+    "title": "Introduction to Computer-Based Training Software: Concepts and Tools",
+    "description": "Master the fundamental concepts of computer-based training software and gain hands-on experience with basic authoring tools.",
+    "skill_ids": [
+      "TECH-850b1a52dca2",
+      "TECH-61ec548d5e45"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
     "duration_min": 60,
     "prerequisites": []
+  },
+  {
+    "id": "mod_interactive_cbt_design",
+    "title": "Designing Interactive and Engaging Computer-Based Training Modules",
+    "description": "Learn to design and develop interactive computer-based training modules, incorporating multimedia elements and assessments.",
+    "skill_ids": [
+      "TECH-07f7616ab0b6",
+      "TECH-66207e87e70b",
+      "TECH-2b2ee9ec173f"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_cbt_software_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_advanced_cbt_development",
+    "title": "Advanced Computer-Based Training Development and Implementation Strategies",
+    "description": "Explore advanced techniques for developing and implementing computer-based training, focusing on accessibility and performance optimization.",
+    "skill_ids": [
+      "TECH-a5f8d80cb838",
+      "TECH-2b1da233f81f",
+      "TECH-28d75a6845c5"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_interactive_cbt_design"
+    ]
+  },
+  {
+    "id": "mod_compliance_software_basics",
+    "title": "Introduction to Compliance Software: Concepts and Applications",
+    "description": "This module provides a foundational understanding of compliance software, its purpose, and common applications across various industries. Learners will explore key features and functionalities of compliance software.",
+    "skill_ids": [
+      "TECH-4735e6d8f55d",
+      "TECH-fe9d949381b7"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_intermediate_compliance_tools",
+    "title": "Configuring and Utilizing Compliance Software: Hands-On Experience",
+    "description": "This module focuses on the practical application of compliance software, including configuration, data management, and reporting. Learners will gain hands-on experience using compliance software to address specific regulatory requirements.",
+    "skill_ids": [
+      "TECH-213078c13563",
+      "TECH-3c5a1cf96be1",
+      "TECH-73bcfdc42203"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_compliance_software_basics"
+    ]
+  },
+  {
+    "id": "mod_advanced_compliance_automation",
+    "title": "Advanced Compliance Software: Automation and Integration Strategies",
+    "description": "This module explores advanced features of compliance software, including automation, integration with other systems, and customization for specific organizational needs. Learners will develop strategies for optimizing compliance processes using software solutions.",
+    "skill_ids": [
+      "TECH-9fef01da2214",
+      "TECH-ef202c024b43",
+      "TECH-948c7ac77189"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_intermediate_compliance_tools"
+    ]
+  },
+  {
+    "id": "mod_cam_fundamentals",
+    "title": "CAM Software Fundamentals: Introduction to Manufacturing Workflows",
+    "description": "This module introduces fundamental concepts of Computer Aided Manufacturing (CAM) software, including basic toolpath generation and simulation.",
+    "skill_ids": [
+      "TECH-cc059346e000",
+      "TECH-9c35069dbf8e"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_advanced_toolpaths",
+    "title": "Intermediate CAM: Advanced Toolpath Strategies and Optimization",
+    "description": "Learners will master advanced toolpath strategies, optimization techniques, and collision avoidance within CAM software for efficient manufacturing.",
+    "skill_ids": [
+      "TECH-f04152f30477",
+      "TECH-a346b3264218",
+      "TECH-20ea7e06d03a"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_cam_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_cam_customization",
+    "title": "Advanced CAM: Customization, Automation, and Post-Processing",
+    "description": "This module focuses on advanced CAM techniques including customization, automation through scripting, and post-processing for specific machine tools.",
+    "skill_ids": [
+      "TECH-1bf71b78b7ce",
+      "TECH-466cbc2e5470",
+      "TECH-0f94197b7a65"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_advanced_toolpaths"
+    ]
+  },
+  {
+    "id": "mod_info_retrieval_fundamentals",
+    "title": "Information Retrieval Fundamentals: Navigating and Utilizing Search Software",
+    "description": "Learn the basic principles of information retrieval and how to effectively use search software to find relevant information from databases and online resources.",
+    "skill_ids": [
+      "TECH-90fcdf66b834",
+      "TECH-7c81b65d0537"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_advanced_search_techniques",
+    "title": "Advanced Search Strategies: Optimizing Queries and Data Extraction",
+    "description": "Master advanced search techniques, including Boolean operators, wildcards, and specialized database functionalities, to refine queries and extract precise data sets.",
+    "skill_ids": [
+      "TECH-ed8ce6440341",
+      "TECH-ada82af89eb3",
+      "TECH-0eee750c98bc"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_info_retrieval_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_custom_database_management",
+    "title": "Custom Database Management: Configuration and Advanced Information Access",
+    "description": "Explore custom database configuration and management, focusing on advanced data access, manipulation, and reporting for specialized information retrieval systems.",
+    "skill_ids": [
+      "TECH-aa42fee52999",
+      "TECH-9c75b40ba12e",
+      "TECH-422dc22381b5"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_advanced_search_techniques"
+    ]
+  },
+  {
+    "id": "mod_intro_map_software",
+    "title": "Introduction to Map Creation Software: Foundations and Essentials",
+    "description": "Learn the fundamental concepts and tools used in map creation software, including basic navigation, data input, and map visualization. Master essential skills to create simple, informative maps using industry-standard software.",
+    "skill_ids": [
+      "TECH-46777cd95c8d",
+      "TECH-1986af3107a6"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_intermediate_map_analysis",
+    "title": "Intermediate Map Creation: Data Analysis and Customization",
+    "description": "Dive deeper into map creation software, focusing on advanced data analysis techniques, customization options, and spatial data manipulation. Develop skills in creating complex maps with detailed layers and specialized visualizations.",
+    "skill_ids": [
+      "TECH-a30842498914",
+      "TECH-818bdd3b037c",
+      "TECH-795c8982087f"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_intro_map_software"
+    ]
+  },
+  {
+    "id": "mod_advanced_map_integration",
+    "title": "Advanced Map Creation: Integration and Automation Techniques",
+    "description": "Explore advanced techniques for integrating map creation software with other systems and automating complex mapping workflows. Master the skills needed to develop custom solutions and optimize map production processes.",
+    "skill_ids": [
+      "TECH-26c06eed728e",
+      "TECH-f9c07c9a2610",
+      "TECH-2844c32828b6"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_intermediate_map_analysis"
+    ]
+  },
+  {
+    "id": "mod_pos_fundamentals",
+    "title": "POS Systems: Introduction to Retail Transaction Management",
+    "description": "Learn the foundational concepts of Point of Sale (POS) systems, including transaction processing and basic reporting.",
+    "skill_ids": [
+      "TECH-fc6f35a9dcc9",
+      "TECH-20b951f3fcc8"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_pos_configuration",
+    "title": "Configuring and Customizing Point of Sale Software for Efficiency",
+    "description": "Master the configuration and customization options within POS software to optimize efficiency and data management workflows.",
+    "skill_ids": [
+      "TECH-c2981c7d2711",
+      "TECH-8baf1f6df201",
+      "TECH-b135f7db38b6"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_pos_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_pos_advanced_analytics",
+    "title": "Advanced POS Analytics and Integration Strategies",
+    "description": "Explore advanced data analytics and integration techniques within POS systems for data-driven decision-making.",
+    "skill_ids": [
+      "TECH-fa6af48d049e",
+      "TECH-7dbc4ed1e360",
+      "TECH-9555102be83b"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_pos_configuration"
+    ]
+  },
+  {
+    "id": "mod_audio_editing_basics",
+    "title": "Introduction to Digital Audio Editing with GarageBand",
+    "description": "Master the fundamentals of digital audio editing using GarageBand, including recording, basic editing, and mixing techniques.",
+    "skill_ids": [
+      "TECH-21b72c2993d7",
+      "TECH-b4d9c83944bd"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_intermediate_audio_mixing",
+    "title": "Intermediate Audio Mixing and Mastering Techniques with Logic Pro",
+    "description": "Explore advanced audio mixing and mastering techniques using Logic Pro, focusing on EQ, compression, and effects processing.",
+    "skill_ids": [
+      "TECH-e7af1bd17cca",
+      "TECH-2471c983a746",
+      "TECH-c6483abb7bf9"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_audio_editing_basics"
+    ]
+  },
+  {
+    "id": "mod_advanced_sound_design",
+    "title": "Advanced Sound Design and Production with Ableton Live",
+    "description": "Learn advanced sound design and music production techniques using Ableton Live, focusing on synthesis, sampling, and advanced effects.",
+    "skill_ids": [
+      "TECH-b9110e12caae",
+      "TECH-c05955734dbc",
+      "TECH-b2df209938a3"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_intermediate_audio_mixing"
+    ]
+  },
+  {
+    "id": "mod_word_processing_essentials",
+    "title": "Word Processing Fundamentals: Mastering Basic Document Creation and Editing",
+    "description": "Learn the core functionalities of word processing software, including creating, formatting, and editing documents. This module focuses on essential skills for effective written communication.",
+    "skill_ids": [
+      "TECH-299f86cf410d",
+      "TECH-ed6901da7f08",
+      "TECH-6fe3eefdd3b5"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_advanced_formatting",
+    "title": "Intermediate Word Processing: Advanced Formatting and Collaboration Techniques",
+    "description": "Explore advanced formatting options, collaboration tools, and document management features. Master techniques for creating professional-looking documents and working effectively in teams.",
+    "skill_ids": [
+      "TECH-99d3b42ec7ae",
+      "TECH-415406e8da35",
+      "TECH-08ea35fc1dfb"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_word_processing_essentials"
+    ]
+  },
+  {
+    "id": "mod_workflow_automation",
+    "title": "Word Processing Automation: Macros and Advanced Document Management",
+    "description": "Learn to automate repetitive tasks using macros and explore advanced document management techniques. This module focuses on optimizing workflows and enhancing productivity.",
+    "skill_ids": [
+      "TECH-e66ac8359cf6",
+      "TECH-88b03ee381a1"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_advanced_formatting"
+    ]
+  },
+  {
+    "id": "mod_calendar_software_fundamentals",
+    "title": "Calendar and Scheduling Software: Core Principles for Beginners",
+    "description": "Master the foundational concepts of calendar and scheduling software, including event creation, resource allocation, and basic reporting.",
+    "skill_ids": [
+      "TECH-ea0efd57fa73",
+      "TECH-68548c50bc54"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_intermediate_scheduling_workflows",
+    "title": "Intermediate Calendar Software: Workflow Automation and Integration",
+    "description": "Develop advanced skills in automating scheduling workflows, integrating calendar data with other systems, and managing complex scheduling scenarios.",
+    "skill_ids": [
+      "TECH-aa5ca0967d0b",
+      "TECH-6d601a90d7c8",
+      "TECH-07572fe8e2ab"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_calendar_software_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_advanced_optimization_reporting",
+    "title": "Advanced Calendar Software: Optimization and Strategic Reporting",
+    "description": "Explore advanced techniques for optimizing scheduling efficiency, generating strategic reports, and customizing calendar software for specific organizational needs.",
+    "skill_ids": [
+      "TECH-8fd55fa29ba1",
+      "TECH-a55fc3b30735",
+      "TECH-716b9c9612fe"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_intermediate_scheduling_workflows"
+    ]
+  },
+  {
+    "id": "mod_intro_inventory_software",
+    "title": "Introduction to Inventory Management Software: Core Concepts",
+    "description": "Learn the fundamental principles of inventory management software, including navigation, data entry, and basic reporting. You will master the essential functions for tracking stock levels and generating simple inventory reports.",
+    "skill_ids": [
+      "TECH-eb65e70fad17",
+      "TECH-51caab329079"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_intermediate_system_functions",
+    "title": "Intermediate Inventory Management: System Functions and Analysis",
+    "description": "Explore advanced features of inventory management software, focusing on data analysis, reporting, and system customization. You will master using system functions for inventory optimization and identifying trends.",
+    "skill_ids": [
+      "TECH-a43f4ff3340d",
+      "TECH-42525a0d8587",
+      "TECH-72c92f801f56"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_intro_inventory_software"
+    ]
+  },
+  {
+    "id": "mod_foundational_communication",
+    "title": "Enhancing Workplace Communication: Reading, Listening, and Speaking Effectively",
+    "description": "This module introduces foundational communication skills, focusing on active listening, reading comprehension, and effective speaking in professional settings. Participants will learn to understand and convey information clearly and concisely.",
+    "skill_ids": [
+      "SOFT-2.A.1.a",
+      "SOFT-2.A.1.b",
+      "SOFT-2.A.1.d"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_applied_technical_skills",
+    "title": "Technical Proficiency: Writing, Math, and Science in the Workplace",
+    "description": "This module focuses on applying technical skills such as writing clear reports, using mathematics for problem-solving, and understanding basic scientific principles relevant to various industries. Participants will enhance their ability to analyze data and communicate technical information effectively.",
+    "skill_ids": [
+      "SOFT-2.A.1.c",
+      "SOFT-2.A.1.e",
+      "SOFT-2.A.1.f"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_foundational_communication"
+    ]
+  },
+  {
+    "id": "mod_think_learn_effectively",
+    "title": "Thinking Critically and Learning Actively in the Workplace",
+    "description": "This module introduces critical thinking and active learning strategies, enabling participants to analyze information objectively and engage actively in the learning process.",
+    "skill_ids": [
+      "SOFT-2.A.2.a",
+      "SOFT-2.A.2.b"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_mastering_learning_monitoring",
+    "title": "Mastering Learning Strategies and Self-Monitoring for Peak Performance",
+    "description": "This module focuses on developing effective learning strategies and self-monitoring techniques to optimize individual and team performance, fostering continuous improvement.",
+    "skill_ids": [
+      "SOFT-2.A.2.c",
+      "SOFT-2.A.2.d",
+      "SOFT-2.A.2.a"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_think_learn_effectively"
+    ]
+  },
+  {
+    "id": "mod_social_savvy_essentials",
+    "title": "Mastering Workplace Dynamics: Social Perceptiveness and Coordination",
+    "description": "Develop essential skills in understanding social cues and collaborating effectively within teams to achieve shared goals. This module focuses on building foundational social intelligence for professional success.",
+    "skill_ids": [
+      "SOFT-2.B.1.a",
+      "SOFT-2.B.1.b"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_influence_impact_workplace",
+    "title": "Influence and Impact: Persuasion, Negotiation, and Service Excellence",
+    "description": "Learn advanced techniques for persuasive communication, successful negotiation strategies, and delivering exceptional service to clients and colleagues. This module equips you with the skills to lead and inspire in any professional setting.",
+    "skill_ids": [
+      "SOFT-2.B.1.c",
+      "SOFT-2.B.1.d",
+      "SOFT-2.B.1.e",
+      "SOFT-2.B.1.f"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_social_savvy_essentials"
+    ]
+  },
+  {
+    "id": "mod_problem_solving_fundamentals",
+    "title": "Mastering Complex Problem Solving: A Foundational Approach",
+    "description": "Learn to effectively identify, analyze, and approach complex problems using structured frameworks and critical thinking techniques. This module focuses on developing core skills for problem decomposition and solution generation.",
+    "skill_ids": [
+      "SOFT-2.B.2.i"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_tech_foundations",
+    "title": "Technical Foundations: Operations, Monitoring, and Equipment Basics",
+    "description": "Learn fundamental skills in operations analysis, equipment selection, and monitoring to ensure efficient and safe technological operations.",
+    "skill_ids": [
+      "SOFT-2.B.3.a",
+      "SOFT-2.B.3.c",
+      "SOFT-2.B.3.g",
+      "SOFT-2.B.3.h"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_tech_advanced_repair",
+    "title": "Advanced Technology: Troubleshooting, Repair, and Quality Assurance",
+    "description": "Develop advanced skills in troubleshooting, repairing, and implementing quality control measures for complex technological systems and equipment.",
+    "skill_ids": [
+      "SOFT-2.B.3.k",
+      "SOFT-2.B.3.l",
+      "SOFT-2.B.3.j",
+      "SOFT-2.B.3.m"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_tech_foundations"
+    ]
+  },
+  {
+    "id": "mod_tech_systems_thinking",
+    "title": "Systems Thinking: Evaluating Technology and Making Informed Decisions",
+    "description": "Learn to analyze and evaluate technological systems to make sound judgments and decisions in a business context.",
+    "skill_ids": [
+      "SOFT-2.B.4.e",
+      "SOFT-2.B.4.g",
+      "SOFT-2.B.4.h"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_ops_resource_essentials",
+    "title": "Operations Essentials: Time and Material Resource Management",
+    "description": "Learn fundamental techniques for effectively managing your time and material resources within operational contexts. This module covers prioritization, scheduling, inventory control, and cost-effective resource allocation.",
+    "skill_ids": [
+      "SOFT-2.B.5.a",
+      "SOFT-2.B.5.c"
+    ],
+    "domain": "Operations",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_ops_financial_personnel",
+    "title": "Financial and Personnel Resource Optimization for Operations",
+    "description": "Master advanced strategies for optimizing financial and personnel resources in operations. This module focuses on budgeting, cost analysis, team leadership, performance management, and legal compliance.",
+    "skill_ids": [
+      "SOFT-2.B.5.b",
+      "SOFT-2.B.5.d"
+    ],
+    "domain": "Operations",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_ops_resource_essentials"
+    ]
+  },
+  {
+    "id": "mod_ops_mgmt_fundamentals",
+    "title": "Operations Management Fundamentals: Administration, Economics, and Customer Service",
+    "description": "This module introduces core operations management principles, covering administrative practices, economic considerations, and delivering exceptional customer service.",
+    "skill_ids": [
+      "SOFT-2.C.1.a",
+      "SOFT-2.C.1.b",
+      "SOFT-2.C.1.c",
+      "SOFT-2.C.1.e"
+    ],
+    "domain": "Operations",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_ops_strategy_optimization",
+    "title": "Optimizing Operations: Sales, Marketing, HR, and Transportation Strategies",
+    "description": "This module explores strategic approaches to operations management, focusing on sales and marketing integration, human resource management, and efficient transportation logistics.",
+    "skill_ids": [
+      "SOFT-2.C.1.d",
+      "SOFT-2.C.1.f",
+      "SOFT-2.C.10"
+    ],
+    "domain": "Operations",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_ops_mgmt_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_tech_design_intro",
+    "title": "Technology Fundamentals: Exploring Design and Electronic Systems",
+    "description": "This module introduces fundamental concepts in technology, focusing on design principles and the basics of computer and electronic systems. Students will gain a foundational understanding of how technology impacts engineering and construction.",
+    "skill_ids": [
+      "SOFT-2.C.3.a",
+      "SOFT-2.C.3.c",
+      "SOFT-2.C.3.d"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_eng_mech_systems",
+    "title": "Engineering Technology: Applying Mechanical and Electronic Principles",
+    "description": "This module builds upon introductory concepts, applying engineering technology principles to mechanical and electronic systems in building and construction scenarios. Students will analyze and design solutions integrating various technological components.",
+    "skill_ids": [
+      "SOFT-2.C.3.b",
+      "SOFT-2.C.3.d",
+      "SOFT-2.C.3.e"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_tech_design_intro"
+    ]
+  },
+  {
+    "id": "mod_intro_healthcare_professions",
+    "title": "Exploring Medicine, Dentistry, Therapy, and Counseling Careers",
+    "description": "This module introduces students to the core principles and practices within medicine, dentistry, therapy, and counseling fields, providing an overview of career paths.",
+    "skill_ids": [
+      "SOFT-2.C.5.a",
+      "SOFT-2.C.5.b"
+    ],
+    "domain": "Healthcare",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_foundations_education",
+    "title": "Foundations of Education and Training: A Practical Guide",
+    "description": "Explore the core principles of effective education and training, focusing on instructional design and delivery methods. This module introduces key concepts for creating engaging learning experiences.",
+    "skill_ids": [
+      "SOFT-2.C.6"
+    ],
+    "domain": "Education",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_intro_law_security",
+    "title": "Introduction to Law, Public Safety, and Government Regulations",
+    "description": "This module provides an overview of legal frameworks, public safety protocols, and governmental structures relevant to various industries. Students will learn to navigate legal requirements and security measures.",
+    "skill_ids": [
+      "SOFT-2.C.8.a",
+      "SOFT-2.C.8.b"
+    ],
+    "domain": "Legal",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_cultivate_growth_mindset",
+    "title": "Cultivating a Growth Mindset: Embrace Challenges and Drive Innovation",
+    "description": "This module introduces the core principles of a growth mindset, focusing on developing adaptability, initiative, and tolerance for ambiguity in the workplace.",
+    "skill_ids": [
+      "SOFT-1.D.1.f",
+      "SOFT-1.D.1.e",
+      "SOFT-1.D.1.d"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_lead_innovate_achieve",
+    "title": "Lead, Innovate, and Achieve: Fostering Perseverance and Self-Confidence",
+    "description": "Explore advanced strategies to build self-confidence, persevere through challenges, and cultivate a leadership orientation that drives innovation and achievement.",
+    "skill_ids": [
+      "SOFT-1.D.1.g",
+      "SOFT-1.D.1.h",
+      "SOFT-1.D.1.i",
+      "SOFT-1.D.1.a"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_cultivate_growth_mindset"
+    ]
+  },
+  {
+    "id": "mod_interpersonal_essentials",
+    "title": "Building Bridges: Mastering Humility, Empathy, and Sincerity",
+    "description": "Develop foundational interpersonal skills by practicing humility, demonstrating empathy, and communicating with sincerity. This module focuses on fostering trust and building strong working relationships.",
+    "skill_ids": [
+      "SOFT-1.D.2.a",
+      "SOFT-1.D.2.b",
+      "SOFT-1.D.2.c"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_teamwork_positive",
+    "title": "Thriving Together: Optimism, Cooperation, and Social Orientation at Work",
+    "description": "Enhance teamwork and collaboration skills by cultivating optimism, practicing effective cooperation, and developing a strong social orientation. This module focuses on creating a positive and productive work environment.",
+    "skill_ids": [
+      "SOFT-1.D.2.d",
+      "SOFT-1.D.2.e",
+      "SOFT-1.D.2.f"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_interpersonal_essentials"
+    ]
+  },
+  {
+    "id": "mod_consc_foundations",
+    "title": "Building a Foundation of Trust: Cautiousness and Dependability",
+    "description": "This module introduces the core principles of conscientiousness, emphasizing cautious decision-making and reliable performance in professional settings. Participants will learn techniques to enhance their dependability and minimize errors through careful planning and execution.",
+    "skill_ids": [
+      "SOFT-1.D.3.a",
+      "SOFT-1.D.3.c"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_consc_excellence",
+    "title": "Elevating Performance: Attention to Detail and Workplace Integrity",
+    "description": "Focuses on cultivating attention to detail and maintaining unwavering integrity to achieve excellence in professional roles. Participants will learn strategies for identifying and correcting errors, upholding ethical standards, and building trust through consistent accuracy and honesty.",
+    "skill_ids": [
+      "SOFT-1.D.3.b",
+      "SOFT-1.D.3.d"
+    ],
+    "domain": "Cross-Domain",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_consc_foundations"
+    ]
   }
 ]

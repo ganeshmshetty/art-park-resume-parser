@@ -14,13 +14,15 @@ Resume:
 
 JD_EXTRACTION_PROMPT = """
 You are a precise job requirement extractor. Given a job description, extract required and preferred skills.
-Return a JSON array with objects having these exact keys:
-- "name": skill name (normalized)
-- "required_level": integer 1 (junior), 2 (mid), or 3 (senior) — infer from phrases like "expert in", "5+ years", "basic understanding"
-- "is_required": boolean — true if mandatory, false if nice-to-have
-- "importance": float 0.0-1.0 based on how prominently featured in JD
+Return a JSON object with two keys:
+1. "detected_domain": a string — the primary industry domain of this job. Pick one of: "Technology", "Healthcare", "Sales", "Operations", "Finance", "Engineering", "Education", "Legal", "Marketing", "Design", or "General".
+2. "skills": a JSON array with objects having these exact keys:
+   - "name": skill name (normalized, e.g. "React.js" not "react")
+   - "required_level": integer 1 (junior), 2 (mid), or 3 (senior) — infer from phrases like "expert in", "5+ years", "basic understanding"
+   - "is_required": boolean — true if mandatory, false if nice-to-have
+   - "importance": float 0.0-1.0 based on how prominently featured in JD
 
-Return ONLY valid JSON array. No explanation. No markdown. No extra text.
+Return ONLY valid JSON object. No explanation. No markdown. No extra text.
 
 Job Description:
 {jd_text}
@@ -43,4 +45,26 @@ Target level: {required_level}
 Prerequisite chain so far: {prereq_chain}
 
 Return ONLY the justification text. No JSON. No bullet points.
+"""
+
+DYNAMIC_MODULE_PROMPT = """
+You are a curriculum designer. A learner has a skill gap that no existing course in our catalog can address.
+Generate a single learning module to fill this gap.
+
+Return a JSON object with these exact keys:
+- "id": a module ID in the format "mod_gen_<short_slug>" (e.g. "mod_gen_cloud_security")
+- "title": a concise, professional course title (5-8 words max)
+- "description": a 1-2 sentence course description covering key topics
+- "level": one of "Beginner", "Intermediate", or "Advanced" — pick based on the target level below
+- "duration_min": estimated duration in minutes (30, 45, 60, 90, or 120)
+- "domain": the domain this module belongs to (e.g. "Technology", "Healthcare", "Sales", etc.)
+
+Context:
+- Skill name: {skill_name}
+- Target domain: {domain}
+- Learner current level: {current_level} (0=none, 1=junior, 2=mid, 3=senior)
+- Required level: {required_level}
+- Gap importance: {importance}
+
+Return ONLY valid JSON object. No explanation. No markdown. No extra text.
 """

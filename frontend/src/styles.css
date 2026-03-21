@@ -462,11 +462,12 @@ body {
    ==================================================== */
 .summary-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   margin-bottom: 48px;
 }
-@media (max-width: 768px) { .summary-grid { grid-template-columns: 1fr; } }
+@media (max-width: 1024px) { .summary-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .summary-grid { grid-template-columns: 1fr; } }
 
 .metric-card {
   background: var(--surface-container-lowest);
@@ -485,6 +486,8 @@ body {
 .metric-card:nth-child(2) { animation-delay: 0.1s; background: var(--primary-container); }
 .metric-card:nth-child(3) { animation-delay: 0.2s; background: var(--on-surface); color: var(--surface); }
 .metric-card:nth-child(3) .metric-label { color: var(--surface-container-low); }
+.metric-card:nth-child(4) { animation-delay: 0.3s; background: var(--phase-foundation); color: var(--surface); }
+.metric-card:nth-child(4) .metric-label { color: var(--surface-container-low); }
 
 .metric-icon {
   font-size: 32px;

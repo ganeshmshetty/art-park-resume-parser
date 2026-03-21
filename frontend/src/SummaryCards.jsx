@@ -63,8 +63,15 @@ export default function SummaryCards({ result }) {
                 icon={<Clock size={32} strokeWidth={2.5} />}
                 label="Estimated Pathway Time"
                 formatted={`${hours}h`}
-                color="var(--accent-amber)"
+                color="var(--on-surface)"
                 delay={200}
+            />
+            <MetricCard
+                icon={<Target size={32} strokeWidth={2.5} />}
+                label="Target Domain"
+                formatted={result?.detected_domain || "General"}
+                color="var(--surface)"
+                delay={300}
             />
         </div>
     );

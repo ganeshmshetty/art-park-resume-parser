@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { CheckCircle2, FileText, ClipboardList, Paperclip, AlertTriangle, Rocket } from "lucide-react";
 
@@ -35,9 +35,9 @@ function FileDropZone({ label, icon, file, onDrop, accept }) {
 }
 
 export default function UploadPanel({ onSubmit, error }) {
-  const [resume, setResume] = window.React.useState(null);
-  const [jd, setJd] = window.React.useState(null);
-  const [domain, setDomain] = window.React.useState("Technology");
+  const [resume, setResume] = useState(null);
+  const [jd, setJd] = useState(null);
+  const [domain, setDomain] = useState("Technology");
 
   const ACCEPT = {
     "application/pdf": [".pdf"],

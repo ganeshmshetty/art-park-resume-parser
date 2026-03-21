@@ -6,6 +6,7 @@ import {
     CartesianGrid,
     Tooltip,
     Cell,
+    ResponsiveContainer,
 } from "recharts";
 import { BarChart3 } from "lucide-react";
 

@@ -32,7 +32,7 @@ function StepIndicator({ current }) {
             <div
               className={`step-dot${active ? " active" : ""}${done ? " done" : ""}`}
             >
-              <div className="step-circle">{done ? "✓" : i + 1}</div>
+              <div className="step-circle">{done ? "\u2713" : i + 1}</div>
               <span style={{ whiteSpace: "nowrap" }}>{s.label}</span>
             </div>
             {i < STEP_META.length - 1 && (
@@ -158,7 +158,7 @@ export default function App() {
                   className="btn-reset"
                   onClick={handleReset}
                 >
-                  ← New Analysis
+                  \u2190 New Analysis
                 </button>
               </div>
 

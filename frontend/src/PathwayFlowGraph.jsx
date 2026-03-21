@@ -6,6 +6,8 @@ import ReactFlow, {
     useNodesState,
     useEdgesState,
     BackgroundVariant,
+    Handle,
+    Position,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { Map } from "lucide-react";
@@ -26,9 +28,11 @@ function PathwayNode({ data, selected }) {
             className={`rf-node phase-${data.phase?.toLowerCase()}${selected ? " selected" : ""}`}
             onClick={() => data.onSelect && data.onSelect(data)}
         >
+            <Handle type="target" position={Position.Left} style={{ visibility: "hidden" }} />
             <div className={`rf-node-badge ${cfg.badgeClass}`}>{data.phase}</div>
             <div className="rf-node-title">{data.title}</div>
             <div className="rf-node-id">{data.module_id}</div>
+            <Handle type="source" position={Position.Right} style={{ visibility: "hidden" }} />
         </div>
     );
 }

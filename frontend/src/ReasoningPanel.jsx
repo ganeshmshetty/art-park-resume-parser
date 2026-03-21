@@ -53,7 +53,7 @@ export default function ReasoningPanel({ module: mod, traces, onClose }) {
                         onClick={onClose}
                         aria-label="Close panel"
                     >
-                        ✕
+                        x
                     </button>
                 </div>
 

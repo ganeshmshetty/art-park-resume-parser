@@ -55,7 +55,7 @@ export default function ProgressBar({ jobId, apiBase, onComplete, onError }) {
 
     return (
         <div className="glass-card progress-card">
-            <div className="progress-title">Analyzing your profile…</div>
+            <div className="progress-title">Analyzing your profile...</div>
             <div className="progress-subtitle">
                 Our AI is parsing skills, computing gaps, and building your personalized pathway.
             </div>

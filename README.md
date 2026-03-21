@@ -48,6 +48,45 @@ npm install
 npm run dev
 ```
 
+## Deploy Backend to Vercel (Python 3.11)
+
+This repository is now configured for backend-only deployment on Vercel with:
+
+- `api/index.py` as the ASGI entrypoint
+- `vercel.json` routes sending all requests to FastAPI
+- `.vercelignore` excluding large/unneeded assets (frontend, docs, raw O*NET text dumps)
+
+### 1) Install and login
+
+```bash
+npm i -g vercel
+vercel login
+```
+
+### 2) Deploy from repo root
+
+```bash
+vercel
+vercel --prod
+```
+
+### 3) Set required environment variables in Vercel Project Settings
+
+- `GEMINI_API_KEY`
+- `CATALOG_PATH` (optional; default resolves to `data/catalog/modules.json`)
+
+Python is pinned to `3.11.4` via `.python-version`.
+
+### 4) Validate deployment
+
+- `GET /health`
+- `GET /catalog/health`
+- `POST /analyze` with resume + jd files
+
+### Important serverless caveat
+
+`/analyze` currently uses in-memory job state (`JOBS`) and background tasks. On Vercel serverless, instance memory is ephemeral and not shared across invocations, so polling `/result/{job_id}` can be unreliable under scale or cold starts. For production reliability, persist jobs/results in external storage (e.g. Redis/Postgres) and use a queue/worker.
+
 ---
 
 ## Services

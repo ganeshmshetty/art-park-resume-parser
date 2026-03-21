@@ -1588,5 +1588,111 @@
     "duration_min": 90,
     "prerequisites": [],
     "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_nosql_databases",
+    "title": "Introduction to NoSQL Database Fundamentals",
+    "description": "Explore NoSQL database concepts, including data models, query languages, and use cases for various NoSQL database systems.",
+    "skill_ids": [
+      "TECH-801d32a0f0c9"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_git_branching",
+    "title": "Git Branching and Collaboration Workflows",
+    "description": "Learn advanced Git branching strategies, collaborative workflows, and conflict resolution techniques for effective team development.",
+    "skill_ids": [
+      "TECH-0bcc70105ad2"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 45,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_nosql_essentials",
+    "title": "NoSQL Databases: Beginner to Intermediate",
+    "description": "Learn the fundamentals of NoSQL databases, including data models, query languages, and practical implementations.",
+    "skill_ids": [
+      "TECH-801d32a0f0c9"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_git_workflow",
+    "title": "Git Workflow and Collaboration Mastery",
+    "description": "Improve your Git skills with branching, merging, conflict resolution, and collaborative workflows.",
+    "skill_ids": [
+      "TECH-0bcc70105ad2"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 45,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_deep_learning_foundations",
+    "title": "Deep Learning: Core Concepts and Applications",
+    "description": "Explore fundamental deep learning concepts, architectures, and practical applications. This course covers neural networks, activation functions, and loss functions.",
+    "skill_ids": [
+      "TECH-074dd699710d"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_feature_engineering",
+    "title": "Feature Engineering for Machine Learning Models",
+    "description": "Learn how to create, select, and transform features to improve model performance. This module includes techniques for feature scaling, encoding, and dimensionality reduction.",
+    "skill_ids": [
+      null
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 60,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_model_lifecycle",
+    "title": "Model Training, Validation, and Selection",
+    "description": "Master the processes of training, validating, and selecting the best machine learning models. Covers essential metrics and techniques for optimal model performance.",
+    "skill_ids": [
+      null,
+      null,
+      null
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_hyperparameter_tuning",
+    "title": "Hyperparameter Tuning: Optimizing Model Performance",
+    "description": "Discover advanced techniques for hyperparameter optimization to maximize model accuracy. This includes grid search, random search, and Bayesian optimization methods.",
+    "skill_ids": [
+      null
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 60,
+    "prerequisites": [],
+    "_auto_generated": true
   }
 ]

@@ -1,0 +1,13 @@
+# Keep Vercel deployment focused on backend
+frontend/
+docs/
+scripts/
+api/__pycache__/
+api/app/__pycache__/
+api/ai/__pycache__/
+data/db_30_1_text/
+*.log
+*.out
+*.jsonl
+*.ipynb
+.git/

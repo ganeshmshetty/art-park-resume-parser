@@ -26,3 +26,5 @@ frontend/dist/
 *.sqlite3
 *.db
 data/db_30_1_text/
+.vercel
+.env*.local

@@ -1690,5 +1690,18 @@
     "duration_min": 60,
     "prerequisites": [],
     "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_pytorch_fundamentals",
+    "title": "PyTorch Fundamentals: Tensors, Models, and Training",
+    "description": "Learn the fundamentals of PyTorch, including tensors, building neural network models, and the training loop.",
+    "skill_ids": [
+      "TECH-95b88f180e9e"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": [],
+    "_auto_generated": true
   }
 ]

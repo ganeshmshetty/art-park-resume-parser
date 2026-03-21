@@ -182,22 +182,25 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
             coverage = 1.0
 
         # Redundancy Reduction:
-        # Static curriculum might be "all modules for all required skills"
-        # Adaptive pathway is "only modules for gaps"
-        # Let's estimate static count as sum of 'modules_for_skill' for all required skills
-        # This is a bit heavy to compute perfectly, so let's use a heuristic:
-        # Static = sum(len(CATALOG.modules_by_skill.get(s.onet_id, [])) for s in required_skills)
-        # Adaptive = len(pathway.nodes)
-        
-        static_modules_count = 0
+        # Static curriculum = every unique catalog module relevant to ANY required skill.
+        # We deduplicate by module ID so "shared" modules aren't double-counted.
+        # Adaptive pathway = only the modules actually needed for skill gaps.
+        static_module_ids: set[str] = set()
         for s in required_skills:
             if s.onet_id:
-                static_modules_count += len(CATALOG.modules_by_skill.get(s.onet_id, []))
-        
-        if static_modules_count > 0:
-            redundancy_reduction = 1.0 - (len(pathway.nodes) / static_modules_count)
-            redundancy_reduction = max(0.0, redundancy_reduction) # clamp
+                for m in CATALOG.modules_by_skill.get(s.onet_id, []):
+                    static_module_ids.add(m.id)
+
+        static_modules_count = len(static_module_ids)
+        adaptive_count = len(pathway.nodes)
+
+        if static_modules_count > 0 and adaptive_count < static_modules_count:
+            redundancy_reduction = 1.0 - (adaptive_count / static_modules_count)
+            redundancy_reduction = max(0.0, min(1.0, redundancy_reduction))  # clamp [0,1]
+        elif static_modules_count > 0:
+            redundancy_reduction = 0.0
         else:
+            # No catalog matches — pathway is fully LLM-generated, no static baseline
             redundancy_reduction = 0.0
 
         # Collect reasoning traces from pathway nodes
@@ -212,8 +215,8 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
             gap_vector=gap_vector,
             pathway=pathway,
             reasoning_traces=traces,
-            coverage_score=round(coverage, 2),
-            redundancy_reduction=round(redundancy_reduction, 2)
+            coverage_score=round(coverage, 4),
+            redundancy_reduction=round(redundancy_reduction, 4)
         )
 
         logger.info(f"[{job_id}] Analysis job completed successfully")

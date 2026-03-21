@@ -10,9 +10,10 @@ import {
 } from "recharts";
 import { BarChart3 } from "lucide-react";
 
-function gapColor(score) {
-    if (score >= 0.7) return "var(--accent-coral)";
-    if (score >= 0.4) return "var(--accent-amber)";
+function gapColor(normalizedScore) {
+    // Color bands on the normalized 0–1 scale
+    if (normalizedScore >= 0.7) return "var(--accent-coral)";
+    if (normalizedScore >= 0.4) return "var(--accent-amber)";
     return "var(--accent-teal)";
 }
 
@@ -23,26 +24,33 @@ const CustomTooltip = ({ active, payload }) => {
         <div
             style={{
                 background: "var(--bg-surface)",
-                border: "1px solid var(--border)",
-                borderRadius: 8,
-                padding: "10px 14px",
+                border: "2px solid #1a1b24",
+                borderRadius: 10,
+                padding: "12px 16px",
                 fontSize: 13,
+                boxShadow: "3px 3px 0px 0px #1a1b24",
             }}
         >
-            <div style={{ fontWeight: 700, marginBottom: 4, color: "var(--text-primary)" }}>
+            <div style={{ fontWeight: 700, marginBottom: 6, color: "var(--text-primary)" }}>
                 {d.name}
             </div>
-            <div style={{ color: "var(--text-secondary)" }}>
-                Gap Score:{" "}
-                <span style={{ color: gapColor(d.gap), fontWeight: 700 }}>
-                    {Math.round(d.gap * 100)}%
-                </span>
-            </div>
-            {d.importance && (
-                <div style={{ color: "var(--text-secondary)", fontSize: 12, marginTop: 2 }}>
-                    O*NET Importance: {Math.round(d.importance * 100)}
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <div style={{ color: "var(--text-secondary)" }}>
+                    Relative priority:{" "}
+                    <span style={{ color: gapColor(d.normalized), fontWeight: 700 }}>
+                        {Math.round(d.normalized * 100)}%
+                    </span>
                 </div>
-            )}
+                <div style={{ color: "var(--text-secondary)", fontSize: 12 }}>
+                    Raw gap score:{" "}
+                    <span style={{ fontWeight: 600 }}>{d.rawScore.toFixed(2)}</span>
+                </div>
+                {d.importance && (
+                    <div style={{ color: "var(--text-secondary)", fontSize: 12 }}>
+                        O*NET Importance: {Math.round(d.importance * 100)}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
@@ -50,20 +58,35 @@ const CustomTooltip = ({ active, payload }) => {
 export default function SkillGapHeatmap({ gapVector }) {
     if (!gapVector || gapVector.length === 0) return null;
 
-    const data = gapVector.slice(0, 12).map((g) => ({
-        name: g.skill_name || g.onet_id || "Unknown Skill",
-        gap: Math.min(
-            1,
-            Math.max(
-                0,
-                g.gap_score ??
-                (typeof g.required_level === "number" && typeof g.current_level === "number"
-                    ? Math.max(0, g.required_level - g.current_level) / 3
-                    : 0.5)
-            )
-        ),
-        importance: g.importance,
-    }));
+    // Sort highest gap first, take top 12
+    const sorted = [...gapVector]
+        .sort((a, b) => (b.gap_score ?? 0) - (a.gap_score ?? 0))
+        .slice(0, 12);
+
+    // Find the raw max for normalization — must be > 0 to avoid divide-by-zero
+    const rawMax = Math.max(
+        ...sorted.map((g) => g.gap_score ?? 0),
+        0.001
+    );
+
+    const data = sorted.map((g) => {
+        // Raw score: prefer gap_score, fall back to level delta
+        const rawScore =
+            g.gap_score ??
+            (typeof g.required_level === "number" && typeof g.current_level === "number"
+                ? Math.max(0, g.required_level - g.current_level)
+                : 0.5);
+
+        // Normalize: highest gap = 1.0, others scale proportionally
+        const normalized = Math.min(1, Math.max(0, rawScore / rawMax));
+
+        return {
+            name: g.skill_name || g.onet_id || "Unknown Skill",
+            normalized,   // used for bar width
+            rawScore,     // shown in tooltip
+            importance: g.importance,
+        };
+    });
 
     return (
         <div className="glass-card chart-card">
@@ -81,11 +104,12 @@ export default function SkillGapHeatmap({ gapVector }) {
                 </span>
             </div>
 
+            {/* Legend — thresholds now refer to relative priority */}
             <div style={{ display: "flex", gap: 16, marginBottom: 16, flexWrap: "wrap" }}>
                 {[
-                    { color: "var(--accent-coral)", label: "Large gap (>70%)" },
-                    { color: "var(--accent-amber)", label: "Medium gap (40–70%)" },
-                    { color: "var(--accent-teal)", label: "Small gap (<40%)" },
+                    { color: "var(--accent-coral)", label: "High priority (>70%)" },
+                    { color: "var(--accent-amber)", label: "Medium priority (40–70%)" },
+                    { color: "var(--accent-teal)", label: "Lower priority (<40%)" },
                 ].map((l) => (
                     <div
                         key={l.label}
@@ -114,7 +138,7 @@ export default function SkillGapHeatmap({ gapVector }) {
                     >
                         <CartesianGrid
                             horizontal={false}
-                            stroke="rgba(255,255,255,0.05)"
+                            stroke="rgba(0,0,0,0.06)"
                         />
                         <XAxis
                             type="number"
@@ -132,10 +156,10 @@ export default function SkillGapHeatmap({ gapVector }) {
                             axisLine={false}
                             tickLine={false}
                         />
-                        <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
-                        <Bar dataKey="gap" radius={[0, 4, 4, 0]} maxBarSize={18}>
+                        <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(26,27,36,0.04)" }} />
+                        <Bar dataKey="normalized" radius={[0, 4, 4, 0]} maxBarSize={18}>
                             {data.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={gapColor(entry.gap)} />
+                                <Cell key={`cell-${index}`} fill={gapColor(entry.normalized)} />
                             ))}
                         </Bar>
                     </BarChart>

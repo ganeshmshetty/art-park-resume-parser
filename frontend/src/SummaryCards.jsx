@@ -17,9 +17,9 @@ function useCountUp(target, duration = 1200) {
     return value;
 }
 
-function MetricCard({ icon, label, value, formatted, color, delay = 0 }) {
+function MetricCard({ icon, label, value, formatted, color, delay = 0, tooltip }) {
     return (
-        <div className="metric-card" style={{ animationDelay: `${delay}ms` }}>
+        <div className="metric-card" style={{ animationDelay: `${delay}ms` }} title={tooltip}>
             <span className="metric-icon">{icon}</span>
             <div className="metric-value" style={{ color }}>
                 {formatted}
@@ -31,11 +31,11 @@ function MetricCard({ icon, label, value, formatted, color, delay = 0 }) {
 
 export default function SummaryCards({ result }) {
     const coverage = useCountUp(
-        Math.round((result?.coverage_score ?? 0) * 100),
+        (result?.coverage_score ?? 0) * 100,
         1000
     );
     const redundancy = useCountUp(
-        Math.round((result?.redundancy_reduction ?? 0) * 100),
+        (result?.redundancy_reduction ?? 0) * 100,
         1000
     );
     const minutes = useCountUp(result?.pathway?.total_duration ?? 0, 1200);
@@ -50,6 +50,7 @@ export default function SummaryCards({ result }) {
                 formatted={`${coverage}%`}
                 color="var(--accent-teal)"
                 delay={0}
+                tooltip="Percentage of job requirements covered by your current skills. 100% means you meet all core requirements."
             />
             <MetricCard
                 icon={<Scissors size={32} strokeWidth={2.5} />}
@@ -58,13 +59,15 @@ export default function SummaryCards({ result }) {
                 formatted={`${redundancy}%`}
                 color="var(--accent-blue)"
                 delay={100}
+                tooltip="Time saved by skipping modules for skills you already know. 0% means you are taking the full static curriculum."
             />
             <MetricCard
                 icon={<Clock size={32} strokeWidth={2.5} />}
                 label="Estimated Pathway Time"
                 formatted={`${hours}h`}
-                color="var(--on-surface)"
+                color="var(--accent-teal)"
                 delay={200}
+                tooltip="Total estimated time to complete all missing skill modules in the adaptive pathway."
             />
             <MetricCard
                 icon={<Target size={32} strokeWidth={2.5} />}
@@ -72,6 +75,7 @@ export default function SummaryCards({ result }) {
                 formatted={result?.detected_domain || "General"}
                 color="var(--surface)"
                 delay={300}
+                tooltip="The primary career domain identified from the provided Job Description."
             />
         </div>
     );

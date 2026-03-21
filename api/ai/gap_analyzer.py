@@ -47,6 +47,11 @@ def compute_gap_vector(
     gaps.sort(key=lambda g: g.gap_score, reverse=True)
     return gaps
 
+# Hard caps to keep pathways focused and scannable
+MAX_GAPS_TO_COVER = 6        # Only address top-N highest-priority gaps
+MAX_LLM_GENERATED = 2        # LLM fallback modules at most
+MAX_PATHWAY_NODES = 12       # Total node ceiling after prerequisite expansion
+
 def generate_adaptive_pathway(
     gaps: List[GapItem],
     catalog: CourseCatalogService,
@@ -55,34 +60,36 @@ def generate_adaptive_pathway(
     """
     Constructs a topologically sorted learning path based on skill gaps.
     HYBRID: Uses catalog modules when available, generates LLM modules for uncovered gaps.
-    1. Identify target modules for gaps from catalog.
-    2. For uncovered gaps, dynamically generate modules via LLM.
-    3. Expand prerequisites to build a DAG.
+    1. Identify target modules for the TOP gaps from catalog (capped).
+    2. For uncovered gaps, dynamically generate modules via LLM (capped).
+    3. Expand prerequisites to build a DAG (capped at MAX_PATHWAY_NODES).
     4. Topologically sort the DAG.
     5. Group into phases.
     """
-    
-    # --- Step 1: Identify target modules from catalog ---
+
+    # --- Step 1: Identify target modules from catalog (top gaps only) ---
     target_modules_map: Dict[str, CatalogModule] = {}
     uncovered_gaps: List[GapItem] = []
+    # Only process highest-priority gaps
+    prioritized_gaps = gaps[:MAX_GAPS_TO_COVER]
     
-    for gap in gaps:
+    for gap in prioritized_gaps:
         if not gap.onet_id:
             uncovered_gaps.append(gap)
             continue
-        
+
         candidates = catalog.modules_by_skill.get(gap.onet_id, [])
         if not candidates:
             uncovered_gaps.append(gap)
             continue
-            
+
         # Pick best candidate matching the target level
         target_level = "Beginner"
         if gap.required_level >= 3:
             target_level = "Advanced"
         elif gap.required_level == 2:
             target_level = "Intermediate"
-            
+
         best = next((m for m in candidates if m.level == target_level), candidates[0])
         target_modules_map[best.id] = best
 
@@ -95,8 +102,9 @@ def generate_adaptive_pathway(
             from ai.prompts import DYNAMIC_MODULE_PROMPT
             import json
             import re
-            
-            for gap in uncovered_gaps:
+
+            # Only generate LLM modules for the top uncovered gaps, not all of them
+            for gap in uncovered_gaps[:MAX_LLM_GENERATED]:
                 try:
                     prompt = DYNAMIC_MODULE_PROMPT.format(
                         skill_name=gap.skill_name,
@@ -137,22 +145,29 @@ def generate_adaptive_pathway(
         except ImportError:
             print("[Pathway] LLM imports not available, skipping dynamic generation")
 
-    # --- Step 3: Expand Prerequisites (DAG Build) ---
+    # --- Step 3: Expand Prerequisites (DAG Build, capped at MAX_PATHWAY_NODES) ---
     expanded_modules: Dict[str, CatalogModule] = {}
-    
-    def expand(module_id: str):
+
+    def expand(module_id: str, depth: int = 0):
+        """Recursively expand prerequisites up to the pathway node cap.
+        Depth-first but stops adding new nodes once cap is reached.
+        """
         if module_id in expanded_modules:
             return
-        
+        if len(expanded_modules) >= MAX_PATHWAY_NODES:
+            return  # Pathway is full — skip remaining prerequisites
+
         # Check catalog first, then generated modules
         module = catalog.modules_by_id.get(module_id) or generated_modules.get(module_id)
         if not module:
-            return 
-        
+            return
+
         expanded_modules[module_id] = module
-        for prereq_id in module.prerequisites:
-            expand(prereq_id)
-            
+        # Only expand one level of prerequisites to avoid deep chains bloating the path
+        if depth < 1:
+            for prereq_id in module.prerequisites:
+                expand(prereq_id, depth + 1)
+
     for mid in target_modules_map:
         expand(mid)
     

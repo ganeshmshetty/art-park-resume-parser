@@ -272,6 +272,18 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
                 for m in CATALOG.modules_by_skill.get(s.onet_id, []):
                     static_module_ids.add(m.id)
 
+        # Expand prerequisites for static baseline
+        while True:
+            new_ids = set()
+            for mid in static_module_ids:
+                if mid in CATALOG.modules_by_id:
+                    for pid in CATALOG.modules_by_id[mid].prerequisites:
+                        if pid not in static_module_ids:
+                            new_ids.add(pid)
+            if not new_ids:
+                break
+            static_module_ids.update(new_ids)
+
         static_modules_count = len(static_module_ids)
         adaptive_count = len(pathway.nodes)
 

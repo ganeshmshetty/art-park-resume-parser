@@ -1659,7 +1659,7 @@
     "title": "Feature Engineering for Machine Learning Models",
     "description": "Learn how to create, select, and transform features to improve model performance. This module includes techniques for feature scaling, encoding, and dimensionality reduction.",
     "skill_ids": [
-      null
+      "2.A.2.b"
     ],
     "domain": "Technology",
     "level": "Intermediate",
@@ -1671,11 +1671,7 @@
     "id": "mod_gen_model_lifecycle",
     "title": "Model Training, Validation, and Selection",
     "description": "Master the processes of training, validating, and selecting the best machine learning models. Covers essential metrics and techniques for optimal model performance.",
-    "skill_ids": [
-      null,
-      null,
-      null
-    ],
+    "skill_ids": [],
     "domain": "Technology",
     "level": "Intermediate",
     "duration_min": 120,
@@ -1687,7 +1683,7 @@
     "title": "Hyperparameter Tuning: Optimizing Model Performance",
     "description": "Discover advanced techniques for hyperparameter optimization to maximize model accuracy. This includes grid search, random search, and Bayesian optimization methods.",
     "skill_ids": [
-      null
+      "2.2.A.1"
     ],
     "domain": "Technology",
     "level": "Intermediate",

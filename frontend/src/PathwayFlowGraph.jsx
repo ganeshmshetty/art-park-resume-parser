@@ -1,10 +1,8 @@
-import React, { useCallback, useMemo, useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import ReactFlow, {
     Background,
     Controls,
     MiniMap,
-    useNodesState,
-    useEdgesState,
     BackgroundVariant,
     Handle,
     Position,
@@ -14,41 +12,57 @@ import { Map } from "lucide-react";
 
 /* ---- Phase config ---- */
 const PHASE_CONFIG = {
-    Foundation: { badgeClass: "foundation", color: "#3b82f6" },
-    Core: { badgeClass: "core", color: "#a855f7" },
-    Advanced: { badgeClass: "advanced", color: "#f87171" },
+    Foundation: { color: "#3b82f6", badge: "Foundation" },
+    Core: { color: "#a855f7", badge: "Core" },
+    Advanced: { color: "#f87171", badge: "Advanced" },
 };
 
 /* ---- Custom Node ---- */
-function PathwayNode({ data, selected }) {
+function PathwayNode({ id, data }) {
     const cfg = PHASE_CONFIG[data.phase] || PHASE_CONFIG.Foundation;
     return (
         <div
-            id={`node-${data.module_id}`}
-            className={`rf-node phase-${data.phase?.toLowerCase()}${selected ? " selected" : ""}`}
+            className={`rf-node phase-${data.phase?.toLowerCase()}`}
+            style={{ 
+                border: "2px solid #1a1b24",
+                padding: "16px",
+                borderRadius: "12px",
+                background: "#ffffff",
+                boxShadow: "4px 4px 0px 0px #1a1b24",
+                minWidth: "200px"
+            }}
             onClick={() => data.onSelect && data.onSelect(data)}
         >
-            <Handle type="target" position={Position.Left} style={{ visibility: "hidden" }} />
-            <div className={`rf-node-badge ${cfg.badgeClass}`}>{data.phase}</div>
-            <div className="rf-node-title">{data.title}</div>
-            <div className="rf-node-id">{data.module_id}</div>
-            <Handle type="source" position={Position.Right} style={{ visibility: "hidden" }} />
+            <Handle type="target" position={Position.Left} style={{ background: cfg.color }} />
+            <div style={{ 
+                fontSize: "10px", 
+                fontWeight: 700, 
+                backgroundColor: cfg.color, 
+                color: "#fff", 
+                padding: "2px 8px", 
+                borderRadius: "10px", 
+                display: "inline-block" 
+            }}>
+                {cfg.badge}
+            </div>
+            <div style={{ fontWeight: 700, marginTop: "8px", fontSize: "14px", color: "#1a1b24" }}>{data.title}</div>
+            <div style={{ fontSize: "11px", color: "#5d5d68", marginTop: "4px" }}>{data.module_id || id}</div>
+            <Handle type="source" position={Position.Right} style={{ background: cfg.color }} />
         </div>
     );
 }
 
 const NODE_TYPES = { pathway: PathwayNode };
 
-/* ---- Layout: simple left-to-right layered layout ---- */
+/* ---- Layout Helper ---- */
 function buildLayout(nodes, edges) {
-    // Group by phase order
     const PHASE_ORDER = ["Foundation", "Core", "Advanced"];
     const groups = {};
     PHASE_ORDER.forEach((p) => { groups[p] = []; });
 
     nodes.forEach((n) => {
-        const phase = n.phase || "Foundation";
-        if (!groups[phase]) groups[phase] = [];
+        const rawPhase = n.phase || "Foundation";
+        const phase = PHASE_ORDER.find(p => p.toLowerCase() === rawPhase.toLowerCase()) || "Foundation";
         groups[phase].push(n);
     });
 
@@ -58,120 +72,78 @@ function buildLayout(nodes, edges) {
         const group = groups[phase];
         group.forEach((n, row) => {
             rfNodes.push({
-                id: n.module_id,
+                id: n.module_id || `n-${Math.random()}`,
                 type: "pathway",
-                position: { x: col * 240, y: row * 140 },
-                data: n,
+                position: { x: col * 320, y: row * 160 },
+                data: { ...n, phase },
             });
         });
         if (group.length > 0) col++;
     });
 
-    const fallbackEdges = [];
-    if ((!edges || edges.length === 0) && rfNodes.length > 1) {
-        for (let i = 0; i < rfNodes.length - 1; i += 1) {
-            fallbackEdges.push({
-                from: rfNodes[i].id,
-                to: rfNodes[i + 1].id,
-                type: "sequence",
-            });
-        }
+    // FALLBACK IF EMPTY
+    if (rfNodes.length === 0 && nodes.length > 0) {
+        console.warn("[Graph] rfNodes is empty despite having raw nodes!", nodes);
     }
 
-    const sourceEdges = edges && edges.length > 0 ? edges : fallbackEdges;
+    const sourceEdges = edges && edges.length > 0 ? edges : [];
+    // If no edges from backend, build sequential ones
+    const finalEdges = sourceEdges.length > 0 ? sourceEdges : (rfNodes.length > 1 ? rfNodes.slice(0, -1).map((n, i) => ({ from: n.id, to: rfNodes[i+1].id })) : []);
 
-    const rfEdges = sourceEdges.map((e, i) => ({
-        id: `e-${e.from}-${e.to}-${i}`,
-        source: e.from,
-        target: e.to,
-        label: e.type || "",
-        style: { stroke: "rgba(110,118,255,0.5)", strokeWidth: 1.5 },
-        labelStyle: { fill: "rgba(139,143,168,0.8)", fontSize: 10 },
+    const rfEdges = finalEdges.map((e, i) => ({
+        id: `e-${i}`,
+        source: e.from || e.source,
+        target: e.to || e.target,
         animated: true,
+        style: { stroke: "#6e76ff", strokeWidth: 2.5 },
     }));
 
     return { rfNodes, rfEdges };
 }
 
 export default function PathwayFlowGraph({ pathway, onSelectModule }) {
+    console.log("[Graph] Prop 'pathway' received:", pathway);
     const rawNodes = pathway?.nodes || [];
     const rawEdges = pathway?.edges || [];
 
-    const { rfNodes: initialNodes, rfEdges: initialEdges } = useMemo(
-        () => buildLayout(rawNodes, rawEdges),
-        [rawNodes, rawEdges]
+    const { rfNodes, rfEdges } = useMemo(
+        () => {
+            const layout = buildLayout(rawNodes, rawEdges);
+            // Inject onSelectModule
+            layout.rfNodes = layout.rfNodes.map(n => ({
+                ...n,
+                data: { ...n.data, onSelect: onSelectModule }
+            }));
+            console.log("[Graph] Built layout:", layout.rfNodes.length, "nodes,", layout.rfEdges.length, "edges");
+            return layout;
+        },
+        [rawNodes, rawEdges, onSelectModule]
     );
-
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
-    // Sync state when initial layout changes (important for async data)
-    useEffect(() => {
-        setNodes(initialNodes.map(n => ({
-            ...n,
-            data: { ...n.data, onSelect: onSelectModule }
-        })));
-        setEdges(initialEdges);
-    }, [initialNodes, initialEdges, onSelectModule, setNodes, setEdges]);
 
     if (rawNodes.length === 0) return null;
 
     return (
-        <div className="glass-card flow-card">
-            <div className="flow-header">
-                <div className="flow-header-title"><Map size={24} strokeWidth={2.5} style={{ marginRight: 6 }} /> Adaptive Learning Pathway</div>
-                <div className="flow-legend">
-                    {Object.entries(PHASE_CONFIG).map(([phase, cfg]) => (
-                        <div key={phase} className="legend-item">
-                            <span className="legend-dot" style={{ background: cfg.color }} />
-                            {phase}
-                        </div>
-                    ))}
+        <div className="glass-card flow-card" style={{ padding: 0, overflow: "hidden", marginBottom: "48px" }}>
+            <div className="flow-header" style={{ padding: "20px 32px", borderBottom: "2px solid #1a1b24", backgroundColor: "#fff" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", fontWeight: 700, fontSize: "20px" }}>
+                    <Map size={24} /> Adaptive Learning Pathway
                 </div>
             </div>
 
-            <div className="flow-container">
+            <div style={{ height: "550px", backgroundColor: "#f3f0f7", position: "relative" }}>
                 <ReactFlow
-                    nodes={nodes}
-                    edges={edges}
-                    onNodesChange={onNodesChange}
-                    onEdgesChange={onEdgesChange}
+                    nodes={rfNodes}
+                    edges={rfEdges}
                     nodeTypes={NODE_TYPES}
                     fitView
-                    fitViewOptions={{ padding: 0.25 }}
-                    minZoom={0.4}
-                    proOptions={{ hideAttribution: true }}
+                    fitViewOptions={{ padding: 0.3 }}
                 >
-                    <Background
-                        color="rgba(255,255,255,0.04)"
-                        gap={24}
-                        variant={BackgroundVariant.Dots}
-                    />
+                    <Background variant={BackgroundVariant.Dots} gap={24} color="#1a1b24" />
                     <Controls />
-                    <MiniMap
-                        nodeColor={(n) => {
-                            const cfg = PHASE_CONFIG[n.data?.phase] || PHASE_CONFIG.Foundation;
-                            return cfg.color;
-                        }}
-                        style={{ background: "rgba(15,17,32,0.9)" }}
-                        maskColor="rgba(0,0,0,0.4)"
-                    />
+                    <MiniMap />
                 </ReactFlow>
-            </div>
-
-            <div
-                style={{
-                    padding: "12px 24px",
-                    borderTop: "1px solid var(--border)",
-                    fontSize: 12,
-                    color: "var(--text-muted)",
-                }}
-            >
-                {rawNodes.length} modules · {rawEdges.length} prerequisite edges ·{" "}
-                <span style={{ color: "var(--accent-blue)" }}>
-                    Click any node to see reasoning trace
-                </span>
             </div>
         </div>
     );
 }
+

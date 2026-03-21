@@ -40,8 +40,14 @@ class PathNode(BaseModel):
     estimated_duration: int
     skill_gaps_covered: List[str]
 
+class PathwayEdge(BaseModel):
+    source: str
+    target: str
+    type: str = "prerequisite"
+
 class AdaptivePathway(BaseModel):
     nodes: List[PathNode]
+    edges: List[PathwayEdge]
     total_duration: int
     phases: dict[str, List[str]] # phase_name -> [module_ids]
 

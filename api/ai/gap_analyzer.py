@@ -237,8 +237,17 @@ def generate_adaptive_pathway(
         
         current_total_min += module.duration_min
 
+    # --- Step 5: Construct Edges ---
+    path_edges = []
+    from ai.models import PathwayEdge
+    for mid, module in expanded_modules.items():
+        for prereq_id in module.prerequisites:
+            if prereq_id in expanded_modules:
+                path_edges.append(PathwayEdge(source=prereq_id, target=mid))
+
     return AdaptivePathway(
         nodes=path_nodes,
+        edges=path_edges,
         total_duration=current_total_min,
         phases=phase_buckets
     )

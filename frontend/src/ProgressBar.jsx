@@ -10,9 +10,10 @@ const STEPS = [
 
 // Map API status to step index (0-based)
 function statusToStep(status) {
-    if (status === "queued") return 0;
-    if (status === "processing") return 2;
-    if (status === "completed") return 3;
+    const s = status?.toLowerCase();
+    if (s === "queued") return 0;
+    if (s === "processing") return 2;
+    if (s === "completed" || s === "complete" || s === "done") return 3;
     return 0;
 }
 
@@ -35,7 +36,7 @@ export default function ProgressBar({ jobId, apiBase, onComplete, onError }) {
                 setApiStatus(data.status);
                 setCurrentStep(statusToStep(data.status));
 
-                if (data.status === "completed") {
+                if (data.status === "completed" || data.status === "complete") {
                     clearInterval(intervalRef.current);
                     setTimeout(() => onComplete(data), 600);
                 } else if (data.status === "failed") {

@@ -221,6 +221,8 @@ body {
   display: inline-block;
   padding: 4px 16px;
   margin-left: -16px;
+  border-radius: 25px;
+  border:3px solid black;
 }
 .section-subtitle {
   font-size: 1.25rem;
@@ -376,10 +378,22 @@ body {
 }
 .progress-steps {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 0;
-  margin-bottom: 32px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 56px;
+  padding: 0 16px;
+}
+
+/* Step wrappers (injected by React) */
+.progress-steps > div {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+.progress-steps > div:last-child {
+  flex: 0 0 auto;
 }
 .ps-item {
   display: flex;
@@ -428,7 +442,9 @@ body {
 .ps-label.active { color: var(--on-surface); }
 .ps-label.done { color: var(--on-surface); }
 .ps-connector {
-  width: 64px;
+  flex: 1;
+  width: auto;
+  min-width: 20px;
   height: 4px;
   background: var(--on-surface);
   opacity: 0.2;
@@ -456,6 +472,21 @@ body {
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
+
+@media (max-width: 600px) {
+  .ps-label {
+    width: 90px;
+    font-size: 11px;
+    line-height: 1.2;
+    top: 52px;
+  }
+  .ps-dot {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+}
+
 
 /* ====================================================
    SUMMARY CARDS

@@ -221,6 +221,8 @@ body {
   display: inline-block;
   padding: 4px 16px;
   margin-left: -16px;
+  border : 3px solid black;
+  border-radius: 20px;
 }
 .section-subtitle {
   font-size: 1.25rem;

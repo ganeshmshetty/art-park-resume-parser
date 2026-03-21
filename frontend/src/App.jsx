@@ -125,20 +125,16 @@ export default function App() {
             <div className="header-badge">Hackathon 2026</div>
           </div>
           <nav>
-            <Link to="/dashboard" style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.5rem', 
-              color: 'var(--on-surface)',
-              textDecoration: 'none',
-              background: 'var(--surface-container)',
-              padding: '0.5rem 1rem',
-              borderRadius: '8px',
-              fontSize: '0.85rem',
-              fontWeight: '600'
-            }}>
-              <LibraryBig size={16} /> Pathway Library
-            </Link>
+            <Link to="/dashboard" className="btn-reset" style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                textDecoration: 'none',
+                padding: '0.5rem 1rem',
+                fontSize: '0.85rem'
+              }}>
+                <LibraryBig size={16} /> Pathway Library
+              </Link>
           </nav>
         </header>
 

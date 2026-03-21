@@ -56,23 +56,19 @@ export default function Dashboard() {
                   Match Score: {run.match_score}% • Date: {new Date(run.created_at).toLocaleDateString()}
                 </p>
               </div>
-              <Link 
-                to={`/pathway/${run.id}`}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.5rem 1rem',
-                  background: 'var(--primary)',
-                  color: 'var(--on-primary)',
-                  textDecoration: 'none',
-                  borderRadius: '4px',
-                  fontSize: '0.85rem',
-                  fontWeight: '600'
-                }}
-              >
-                Track Pathway <ExternalLink size={16} />
-              </Link>
+              <Link
+                  to={`/pathway/${run.id}`}
+                  className="btn-reset"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    textDecoration: 'none',
+                    padding: '0.5rem 1rem'
+                  }}
+                >
+                  Track Pathway <ExternalLink size={16} />
+                </Link>
             </div>
           ))}
         </div>

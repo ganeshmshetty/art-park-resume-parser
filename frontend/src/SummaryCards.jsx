@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Target, Scissors, Clock } from "lucide-react";
 
 function useCountUp(target, duration = 1200) {
     const [value, setValue] = useState(0);
@@ -43,7 +44,7 @@ export default function SummaryCards({ result }) {
     return (
         <div className="summary-grid">
             <MetricCard
-                icon="🎯"
+                icon={<Target size={32} strokeWidth={2.5} />}
                 label="Coverage Score"
                 value={coverage}
                 formatted={`${coverage}%`}
@@ -51,7 +52,7 @@ export default function SummaryCards({ result }) {
                 delay={0}
             />
             <MetricCard
-                icon="✂️"
+                icon={<Scissors size={32} strokeWidth={2.5} />}
                 label="Redundancy Reduction"
                 value={redundancy}
                 formatted={`${redundancy}%`}
@@ -59,7 +60,7 @@ export default function SummaryCards({ result }) {
                 delay={100}
             />
             <MetricCard
-                icon="⏱️"
+                icon={<Clock size={32} strokeWidth={2.5} />}
                 label="Estimated Pathway Time"
                 formatted={`${hours}h`}
                 color="var(--accent-amber)"

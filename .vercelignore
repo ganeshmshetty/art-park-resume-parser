@@ -1,5 +1,4 @@
-# Keep Vercel deployment focused on backend
-frontend/
+# Keep Vercel deployment focused on frontend build output
 docs/
 scripts/
 api/__pycache__/
